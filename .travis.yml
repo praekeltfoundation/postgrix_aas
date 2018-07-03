@@ -29,6 +29,7 @@ env:
     - MIX_ENV=pg
     - MIX_ENV=mysql
 install:
+  - mix local.rebar --force
   - mix local.hex --force
   - mix deps.get
 before_script:

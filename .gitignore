@@ -24,3 +24,5 @@ postgrix_aas-*.tar
 
 postgrix_aas
 
+/.elixir_ls/
+

@@ -1,6 +1,6 @@
 use Mix.Config
 
-config :my_app, Postgres_aaS.Repo,
+config :postgrix_aas, Postgrix_Clusters.Repo,
   database: "testpostgres",
   username: "postgres",
   password: "mysecretpassword",

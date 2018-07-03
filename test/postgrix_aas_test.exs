@@ -1,4 +1,4 @@
-defmodule Postgrix_aaS.RepoCase do
+defmodule Postgrix_Clusters.RepoCase do
   use ExUnit.CaseTemplate
 
   using do
@@ -7,17 +7,17 @@ defmodule Postgrix_aaS.RepoCase do
 
       import Ecto
       import Ecto.Query
-      import Postgrix_aaS.RepoCase
+      import Postgrix_Clusters.RepoCase
 
       # and any other stuff
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Postgrix_aaS.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Postgrix_Clusters.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Postgrix_aaS.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(Postgrix_Clusters.Repo, {:shared, self()})
     end
 
     :ok

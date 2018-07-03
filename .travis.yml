@@ -29,6 +29,7 @@ env:
     - MIX_ENV=pg
     - MIX_ENV=mysql
 install:
+  - mix local.hex --force
   - mix deps.get
 before_script:
   - psql -c "CREATE USER postgres WITH PASSWORD 'mysecretpassword';" -U postgres

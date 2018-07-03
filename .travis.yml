@@ -32,10 +32,12 @@ install:
   - mix local.hex --force
   - mix deps.get
 before_script:
+  - psql -c "CREATE DATABASE postgres;" -U postgres
   - psql -c "CREATE USER postgres WITH PASSWORD 'mysecretpassword';" -U postgres
 script:
   - ECTO_POOL=poolboy mix test
   - ECTO_POOL=sbroker mix test
+  - mix ecto.create
 after_script:
   - mix deps.get --only docs
   - MIX_ENV=docs mix inch.report

@@ -9,7 +9,6 @@ defmodule PostgrixAas.MixProject do
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       aliases: aliases(),
-      escript: escript()
     ]
   end
 
@@ -33,10 +32,6 @@ defmodule PostgrixAas.MixProject do
     [
      "test": ["ecto.create --quiet", "ecto.migrate", "test"]
     ]
-  end
-
-  defp escript do
-    [main_module: PostgrixAas.Application]
   end
 
 end

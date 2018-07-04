@@ -22,7 +22,5 @@ erl_crash.dump
 # Ignore package tarball (built via "mix hex.build").
 postgrix_aas-*.tar
 
-postgrix_aas
-
 /.elixir_ls/
 

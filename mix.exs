@@ -7,8 +7,7 @@ defmodule PostgrixAas.MixProject do
       version: "0.1.0",
       elixir: "~> 1.6",
       start_permanent: Mix.env() == :prod,
-      deps: deps(),
-      aliases: aliases(),
+      deps: deps()
     ]
   end
 
@@ -27,11 +26,4 @@ defmodule PostgrixAas.MixProject do
       {:postgrex, "~> 0.11"},
     ]
   end
-
-  defp aliases do
-    [
-     "test": ["ecto.create --quiet", "ecto.migrate", "test"]
-    ]
-  end
-
 end

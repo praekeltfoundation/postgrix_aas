@@ -3,15 +3,7 @@ elixir:
   - 1.6.1
 otp_release:
   - 20.2
-addons:
-  apt:
-    packages:
-      - mysql-server-5.6
-      - mysql-client-core-5.6
-      - mysql-client-5.6
 before_install:
-
-
 dist: trusty
 cache: apt
 matrix:
@@ -36,8 +28,7 @@ before_script:
   - psql -c "CREATE DATABASE testpostgres;" -U postgres
   - psql -c "ALTER USER postgres WITH PASSWORD 'mysecretpassword';" -U postgres
 script:
-  - ECTO_POOL=poolboy mix test
-  - ECTO_POOL=sbroker mix test
+  - mix test
   - mix ecto.create
 after_script:
   - mix deps.get --only docs

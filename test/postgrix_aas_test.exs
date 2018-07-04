@@ -1,8 +1,25 @@
-defmodule PostgrixAasTest do
-  use ExUnit.Case
-  doctest PostgrixAas
+defmodule Postgrix_Cluster.RepoCase do
+  use ExUnit.CaseTemplate
 
-  test "greets the world" do
-    assert PostgrixAas.hello() == :world
+  using do
+    quote do
+      alias Postgrix_Cluster.Repo
+
+      import Ecto
+      import Ecto.Query
+      import Postgrix_Cluster.RepoCase
+
+      # and any other stuff
+    end
+  end
+
+  setup tags do
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Postgrix_Cluster.Repo)
+
+    unless tags[:async] do
+      Ecto.Adapters.SQL.Sandbox.mode(Postgrix_Cluster.Repo, {:shared, self()})
+    end
+
+    :ok
   end
 end

@@ -10,7 +10,7 @@ env:
   global:
     - PGVERSION=9.6
   matrix:
-    - MIX_ENV=test
+    - MIX_ENV=dev
 install:
   - mix local.rebar --force
   - mix local.hex --force

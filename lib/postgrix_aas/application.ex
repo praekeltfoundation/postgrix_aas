@@ -9,6 +9,7 @@ defmodule PostgrixAas.Application do
   #  import Supervisor.Spec
     # List all child processes to be supervised
     children = [
+      InternalDB.Repo,
       Postgrix_Cluster.Repo,
     ]
     IO.puts("Application Started!")
@@ -16,7 +17,6 @@ defmodule PostgrixAas.Application do
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: PostgrixAas.Supervisor]
     Supervisor.start_link(children, opts)
-    #Supervisor.start_link(Postgrex.start_link(hostname: "localhost", username: "postgres", password: "mysecretpassword", database: "postgres"), opts)
 
   end
 

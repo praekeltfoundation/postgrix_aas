@@ -17,8 +17,10 @@ install:
   - mix deps.get
 before_script:
   - mix compile
-  - psql -c "CREATE DATABASE testpostgres;" -U postgres
-  - psql -c "ALTER USER postgres WITH PASSWORD 'mysecretpassword';" -U postgres
+  - psql -c "CREATE DATABASE internal_db;" -U postgres
+  - psql -c "CREATE USER ps_internal WITH PASSWORD 'mysecretpassword1'" -U postgres;
+  - psql -c "CREATE DATABASE postgres_cluster;" -U postgres
+  - psql -c "CREATE USER ps_cluster WITH PASSWORD 'mysecretpassword2'" -U postgres;
 script:
   - mix test
   - mix ecto.create

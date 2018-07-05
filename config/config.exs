@@ -2,14 +2,24 @@
 # and its dependencies with the aid of the Mix.Config module.
 use Mix.Config
 
+config :postgrix_aas, InternalDB.Repo,
+  adapter: Ecto.Adapters.Postgres,
+  database: "internal_db",
+  username: "postgres",
+  password: "mysecretpassword1",
+  hostname: "localhost",
+  port: 5432
+
+
 config :postgrix_aas, Postgrix_Cluster.Repo,
   adapter: Ecto.Adapters.Postgres,
-  database: "testpostgres",
+  database: "postgres_cluster",
   username: "postgres",
-  password: "mysecretpassword",
-  hostname: "localhost"
+  password: "mysecretpassword2",
+  hostname: "localhost",
+  port: 5433
 
-config :postgrix_aas, ecto_repos: [Postgrix_Cluster.Repo]
+config :postgrix_aas, ecto_repos: [InternalDB.Repo, Postgrix_Cluster.Repo]
 
 # This configuration is loaded before any dependency and is restricted
 # to this project. If another project depends on this project, this
@@ -38,4 +48,4 @@ config :postgrix_aas, ecto_repos: [Postgrix_Cluster.Repo]
 #
 #     import_config "#{Mix.env}.exs"
 
-import_config "#{Mix.env}.exs"
+ import_config "#{Mix.env}.exs"

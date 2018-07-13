@@ -2,13 +2,11 @@ defmodule InternalDB.Binding do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias InternalDB.Binding
 
   @primary_key {:id, :id, autogenerate: true}
   schema "bindings" do
-    field :instance_id, :string
     field :binding_id, :string
-
+    belongs_to :instance, InternalDB.Instance, references: :instance_id
     timestamps()
   end
 
@@ -20,5 +18,6 @@ defmodule InternalDB.Binding do
     |> cast(params, @fields)
     |> validate_required([:instance_id])
     |> validate_required([:binding_id])
+    |> assoc_constraint(:instance)
     end
 end

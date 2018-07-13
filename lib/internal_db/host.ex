@@ -2,8 +2,6 @@ defmodule InternalDB.Host do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias InternalDB.Host
-
   @primary_key {:id, :id, autogenerate: true}
   schema "hosts" do
     field :ip, :string

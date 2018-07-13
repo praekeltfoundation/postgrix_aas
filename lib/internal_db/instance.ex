@@ -2,7 +2,6 @@ defmodule InternalDB.Instance do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias InternalDB.Instance
 
   @primary_key {:id, :id, autogenerate: true}
   schema "instances" do

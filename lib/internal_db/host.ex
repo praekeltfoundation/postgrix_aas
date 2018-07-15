@@ -4,19 +4,14 @@ defmodule InternalDB.Host do
 
   @primary_key {:id, :id, autogenerate: true}
   schema "hosts" do
-    field :ip, :string
+    field :ip, EctoNetwork.INET
     field :hostname, :string
 
     has_many :clusters, InternalDB.Cluster, foreign_key: :ip
-
-    timestamps()
   end
 
-  @fields ~w(ip hostname)
-
-  def changeset(data, params \\ %{}) do
+  def changeset(data, params \\ :empty) do
     data
-    |> cast(params, @fields)
-    |> validate_required([:ip])
+    |> cast(params, [:ip, :hostname])
     end
 end

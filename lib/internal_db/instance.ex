@@ -11,7 +11,6 @@ defmodule InternalDB.Instance do
     field :instance_id, :string
     has_many :bindings, InternalDB.Binding, foreign_key: :instance_id
 
-    timestamps()
   end
 
 

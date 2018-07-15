@@ -10,7 +10,6 @@ defmodule InternalDB.Cluster do
     field :port, :integer, primary_key: true
     belongs_to :host, InternalDB.Host, references: :ip
 
-    timestamps()
   end
 
   @fields ~w(ip port)

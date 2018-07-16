@@ -4,6 +4,7 @@ defmodule PostgrixAas.Application do
   @moduledoc false
 
   use Application
+  require Logger
 
   def start(_type, _args) do
   #  import Supervisor.Spec
@@ -11,8 +12,9 @@ defmodule PostgrixAas.Application do
     children = [
       InternalDB.Repo,
       Postgrix_Cluster.Repo,
+      {Plug.Adapters.Cowboy2, scheme: :http, plug: API.Router, options: [port: 8080]}
     ]
-    IO.puts("Application Started!")
+    Logger.info("Application Started!")
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: PostgrixAas.Supervisor]

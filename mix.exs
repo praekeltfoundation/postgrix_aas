@@ -24,7 +24,10 @@ defmodule PostgrixAas.MixProject do
   defp deps do
     [
       {:ecto, "~> 2.0"},
-      {:postgrex, "~> 0.11"},
+      {:postgrex, "~> 0.13"},
+      {:ecto_network, "~> 0.6.0"},
+      {:plug, "~> 1.4"},
+      {:cowboy, "~> 2.3"},
     ]
   end
 

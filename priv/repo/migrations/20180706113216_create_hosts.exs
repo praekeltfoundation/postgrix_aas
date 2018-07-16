@@ -6,7 +6,7 @@ defmodule InternalDB.Repo.Migrations.CreateHosts do
       CREATE TABLE hosts (
       id SERIAL,
       ip INET PRIMARY KEY,
-      host VARCHAR(256));
+      hostname VARCHAR(256));
     """
   end
 

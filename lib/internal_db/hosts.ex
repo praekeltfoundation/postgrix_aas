@@ -1,4 +1,4 @@
-defmodule InternalDB.Host do
+defmodule InternalDB.Hosts do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -7,7 +7,7 @@ defmodule InternalDB.Host do
     field :ip, EctoNetwork.INET
     field :hostname, :string
 
-    has_many :clusters, InternalDB.Cluster, foreign_key: :ip
+    has_many :clusters, InternalDB.Clusters, foreign_key: :ip
   end
 
   def changeset(data, params \\ :empty) do

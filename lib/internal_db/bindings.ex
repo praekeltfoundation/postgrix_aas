@@ -8,9 +8,7 @@ defmodule InternalDB.Bindings do
   schema "bindings" do
     field :binding_id, :string
     belongs_to :instance, InternalDB.Instances, references: :instance_id
-
   end
-
 
   def changeset(data, params \\ %{}) do
     data

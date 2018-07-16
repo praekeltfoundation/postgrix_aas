@@ -10,12 +10,9 @@ defmodule InternalDB.Instances do
     field :db_name, :string
     field :instance_id, :string
     has_many :bindings, InternalDB.Bindings, foreign_key: :instance_id
-
   end
 
-
   @fields ~w(ip port db_name instance_id)
-
   def changeset(data, params \\ %{}) do
     data
     |> cast(params, @fields)

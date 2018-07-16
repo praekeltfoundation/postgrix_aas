@@ -9,11 +9,9 @@ defmodule InternalDB.Clusters do
     field :ip, EctoNetwork.INET, primary_key: true
     field :port, :integer, primary_key: true
     belongs_to :host, InternalDB.Hosts, references: :ip
-
   end
 
   @fields ~w(ip port)
-
   def changeset(host, params \\ %{}) do
     host
     |> cast(params, @fields)

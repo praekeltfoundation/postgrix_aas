@@ -13,18 +13,18 @@ defmodule InternalDB.RepoCase do
     :ok
   end
 
-  def addHost(ip, hostname) do
+  defp addHost(ip, hostname) do
     qry = "INSERT INTO hosts VALUES (DEFAULT, '#{ip}', '#{hostname}');"
     Ecto.Adapters.SQL.query!(Repo, qry, [])
   end
 
-  def addCluster(ip, hostname, port) do
+  defp addCluster(ip, hostname, port) do
     addHost(ip, port)
     qry = "INSERT INTO clusters VALUES (DEFAULT, '#{ip}', #{port});"
     Ecto.Adapters.SQL.query!(Repo, qry, [])
   end
 
-  def addInstance(ip, hostname, port, db_name, instance_id) do
+  defp addInstance(ip, hostname, port, db_name, instance_id) do
     addCluster(ip, hostname, port)
     qry = "INSERT INTO instances VALUES (DEFAULT, '#{ip}', #{port}, '#{db_name}', '#{instance_id}');"
     Ecto.Adapters.SQL.query!(Repo, qry, [])

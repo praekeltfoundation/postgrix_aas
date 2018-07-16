@@ -63,7 +63,7 @@ defmodule InternalDB.RepoCase do
     assert [] = API.instances
 
     addCluster(ip, hostname, port)
-    API.addInstances(ip, port, db_name, instance_id)
+    API.addInstance(ip, port, db_name, instance_id)
 
     assert [{ip, port, db_name, instance_id}] == API.instances
   end
@@ -79,7 +79,7 @@ defmodule InternalDB.RepoCase do
     assert [] = API.bindings
 
     addInstance(ip, hostname, port, db_name, instance_id)
-    API.addBindings(instance_id, binding_id)
+    API.addBinding(instance_id, binding_id)
 
     assert [{instance_id, binding_id}] == API.bindings
   end

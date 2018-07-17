@@ -62,7 +62,19 @@ defmodule InternalDB.RepoCase do
     assert [] == API.clusters
     assert [] == API.instances
     assert [] == API.bindings
+  end
 
+  test "retrieving a host" do
+    ip = %Postgrex.INET{address: {127,0,0,1}}
+    hostname = "example.com"
+
+    addHost(ip, hostname)
+
+    case API.getHost(ip) do
+      %{ip: %Postgrex.INET{address: {127,0,0,1}}, hostname:  "example.com"} ->
+        assert true
+      _ -> assert false
+    end
   end
 
   test "querying all clusters and adding a new cluster" do
@@ -93,7 +105,20 @@ defmodule InternalDB.RepoCase do
     assert [] == API.clusters
     assert [] == API.instances
     assert [] == API.bindings
+  end
 
+  test "retrieving a cluster" do
+    ip = %Postgrex.INET{address: {127,0,0,1}}
+    hostname = "example.com"
+    port = 5432
+
+    addCluster(ip, hostname, port)
+
+    case API.getCluster(ip, port) do
+      %{ip: %Postgrex.INET{address: {127,0,0,1}}, port:  5432} ->
+        assert true
+      _ -> assert false
+    end
   end
 
   test "querying all instances and adding a new instance" do
@@ -127,6 +152,22 @@ defmodule InternalDB.RepoCase do
     assert [] == API.bindings
   end
 
+  test "retrieving an instance" do
+    ip = %Postgrex.INET{address: {127,0,0,1}}
+    hostname = "example.com"
+    port = 5432
+    db_name = "testdb"
+    instance_id = "instance1"
+
+    addInstance(ip, hostname, port, db_name, instance_id)
+
+    case API.getInstance(instance_id) do
+      %{ip: %Postgrex.INET{address: {127,0,0,1}}, port: 5432, db_name: "testdb", instance_id: "instance1"} ->
+        assert true
+      _ -> assert false
+    end
+  end
+
   test "querying all bindings and adding a new binding" do
     ip = %Postgrex.INET{address: {127,0,0,1}}
     hostname = "example.com"
@@ -155,6 +196,23 @@ defmodule InternalDB.RepoCase do
     API.removeBinding(binding_id)
 
     assert [] = API.bindings
+  end
+
+  test "retrieving a binding" do
+    ip = %Postgrex.INET{address: {127,0,0,1}}
+    hostname = "example.com"
+    port = 5432
+    db_name = "testdb"
+    instance_id = "instance1"
+    binding_id = "i1binding1"
+
+    addBinding(ip, hostname, port, db_name, instance_id, binding_id)
+
+    case API.getBinding(binding_id) do
+      %{binding_id: "i1binding1", instance_id: "instance1"} ->
+        assert true
+      _ -> assert false
+    end
   end
 
 end

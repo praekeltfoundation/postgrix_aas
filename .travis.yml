@@ -25,7 +25,7 @@ before_script:
   - psql -c "ALTER USER ps_cluster CREATEDB;" -U postgres
 script:
   - MIX_ENV=dev mix test
-  - mix ecto.create
+  - mix credo
 after_script:
   - mix deps.get --only docs
   - MIX_ENV=docs mix inch.report

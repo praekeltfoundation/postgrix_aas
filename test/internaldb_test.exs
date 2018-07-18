@@ -37,7 +37,7 @@ defmodule InternalDB.RepoCase do
   end
 
   test "querying all hosts and adding a new host" do
-    ip = %Postgrex.INET{address: {127,0,0,1}}
+    ip = %Postgrex.INET{address: {127, 0, 0, 1}}
     hostname = "example.com"
     assert [] == API.hosts
 
@@ -47,7 +47,7 @@ defmodule InternalDB.RepoCase do
   end
 
   test "removing a host" do
-    ip = %Postgrex.INET{address: {127,0,0,1}}
+    ip = %Postgrex.INET{address: {127, 0, 0, 1}}
     hostname = "example.com"
     port = 5432
     db_name = "testdb"
@@ -65,20 +65,20 @@ defmodule InternalDB.RepoCase do
   end
 
   test "retrieving a host" do
-    ip = %Postgrex.INET{address: {127,0,0,1}}
+    ip = %Postgrex.INET{address: {127, 0, 0, 1}}
     hostname = "example.com"
 
     addHost(ip, hostname)
 
     case API.getHost(ip) do
-      %{ip: %Postgrex.INET{address: {127,0,0,1}}, hostname:  "example.com"} ->
+      %{ip: %Postgrex.INET{address: {127, 0, 0, 1}}, hostname:  "example.com"} ->
         assert true
       _ -> assert false
     end
   end
 
   test "querying all clusters and adding a new cluster" do
-    ip = %Postgrex.INET{address: {127,0,0,1}}
+    ip = %Postgrex.INET{address: {127, 0, 0, 1}}
     hostname = "example.com"
     port = 5432
 
@@ -91,7 +91,7 @@ defmodule InternalDB.RepoCase do
   end
 
   test "removing a cluster" do
-    ip = %Postgrex.INET{address: {127,0,0,1}}
+    ip = %Postgrex.INET{address: {127, 0, 0, 1}}
     hostname = "example.com"
     port = 5432
     db_name = "testdb"
@@ -108,21 +108,21 @@ defmodule InternalDB.RepoCase do
   end
 
   test "retrieving a cluster" do
-    ip = %Postgrex.INET{address: {127,0,0,1}}
+    ip = %Postgrex.INET{address: {127, 0, 0, 1}}
     hostname = "example.com"
     port = 5432
 
     addCluster(ip, hostname, port)
 
     case API.getCluster(ip, port) do
-      %{ip: %Postgrex.INET{address: {127,0,0,1}}, port:  5432} ->
+      %{ip: %Postgrex.INET{address: {127, 0, 0, 1}}, port:  5432} ->
         assert true
       _ -> assert false
     end
   end
 
   test "querying all instances and adding a new instance" do
-    ip = %Postgrex.INET{address: {127,0,0,1}}
+    ip = %Postgrex.INET{address: {127, 0, 0, 1}}
     hostname = "example.com"
     port = 5432
     db_name = "testdb"
@@ -137,7 +137,7 @@ defmodule InternalDB.RepoCase do
   end
 
   test "removing an instance" do
-    ip = %Postgrex.INET{address: {127,0,0,1}}
+    ip = %Postgrex.INET{address: {127, 0, 0, 1}}
     hostname = "example.com"
     port = 5432
     db_name = "testdb"
@@ -153,7 +153,7 @@ defmodule InternalDB.RepoCase do
   end
 
   test "retrieving an instance" do
-    ip = %Postgrex.INET{address: {127,0,0,1}}
+    ip = %Postgrex.INET{address: {127, 0, 0, 1}}
     hostname = "example.com"
     port = 5432
     db_name = "testdb"
@@ -162,14 +162,14 @@ defmodule InternalDB.RepoCase do
     addInstance(ip, hostname, port, db_name, instance_id)
 
     case API.getInstance(instance_id) do
-      %{ip: %Postgrex.INET{address: {127,0,0,1}}, port: 5432, db_name: "testdb", instance_id: "instance1"} ->
+      %{ip: %Postgrex.INET{address: {127, 0, 0, 1}}, port: 5432, db_name: "testdb", instance_id: "instance1"} ->
         assert true
       _ -> assert false
     end
   end
 
   test "querying all bindings and adding a new binding" do
-    ip = %Postgrex.INET{address: {127,0,0,1}}
+    ip = %Postgrex.INET{address: {127, 0, 0, 1}}
     hostname = "example.com"
     port = 5432
     db_name = "testdb"
@@ -185,7 +185,7 @@ defmodule InternalDB.RepoCase do
   end
 
   test "removing a binding" do
-    ip = %Postgrex.INET{address: {127,0,0,1}}
+    ip = %Postgrex.INET{address: {127, 0, 0, 1}}
     hostname = "example.com"
     port = 5432
     db_name = "testdb"
@@ -199,7 +199,7 @@ defmodule InternalDB.RepoCase do
   end
 
   test "retrieving a binding" do
-    ip = %Postgrex.INET{address: {127,0,0,1}}
+    ip = %Postgrex.INET{address: {127, 0, 0, 1}}
     hostname = "example.com"
     port = 5432
     db_name = "testdb"

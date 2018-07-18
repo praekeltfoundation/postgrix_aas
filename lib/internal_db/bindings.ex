@@ -2,6 +2,9 @@ defmodule InternalDB.Bindings do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @moduledoc """
+  Schema defining database bindings in the internal database.
+  """
 
   @primary_key {:id, :id, autogenerate: true}
   schema "bindings" do

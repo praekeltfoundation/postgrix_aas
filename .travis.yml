@@ -26,6 +26,7 @@ before_script:
 script:
   - MIX_ENV=dev mix test
   - mix credo
+  - mix format
 after_script:
   - mix deps.get --only docs
   - MIX_ENV=docs mix inch.report

@@ -12,13 +12,13 @@ defmodule InternalDB.API do
     |> Repo.insert!
   end
 
-  def removeHost(ip) do
-    host = Repo.get_by(Hosts, ip: ip)
-    Repo.delete(host)
-  end
-
   def getHost(ip) do
     Repo.get_by(Hosts, ip: ip)
+  end
+
+  def removeHost(ip) do
+    host = getHost(ip)
+    Repo.delete(host)
   end
 
   def clusters do
@@ -36,7 +36,7 @@ defmodule InternalDB.API do
   end
 
   def removeCluster(ip, port) do
-    cluster = Repo.get_by(Clusters, ip: ip, port: port)
+    cluster = getCluster(ip, port)
     Repo.delete(cluster)
   end
 
@@ -50,17 +50,13 @@ defmodule InternalDB.API do
     |> Repo.insert!
   end
 
-  def removeInstance(instance_id) do
-    instance = Repo.get_by(Instances, [instance_id: instance_id])
-    Repo.delete(instance)
-  end
-
   def getInstance(instance_id) do
     Repo.get_by(Instances, instance_id: instance_id)
   end
 
-  def getCluster(ip, port, db_name, instance_id) do
-    Repo.get_by(Instances, ip: ip, port: port, db_name: db_name, instance_id: instance_id)
+  def removeInstance(instance_id) do
+    instance = getInstance(instance_id)
+    Repo.delete(instance)
   end
 
   def bindings do
@@ -73,14 +69,13 @@ defmodule InternalDB.API do
     |> Repo.insert!
   end
 
-  def removeBinding(binding_id) do
-    binding = Repo.get_by(Bindings, binding_id: binding_id)
-    Repo.delete(binding)
-  end
-
   def getBinding(binding_id) do
     Repo.get_by(Bindings, binding_id: binding_id)
   end
 
+  def removeBinding(binding_id) do
+    binding = getBinding(binding_id)
+    Repo.delete(binding)
+  end
 end
 

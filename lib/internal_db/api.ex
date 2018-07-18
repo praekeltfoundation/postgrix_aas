@@ -17,8 +17,8 @@ defmodule InternalDB.API do
   end
 
   def removeHost(ip) do
-    host = getHost(ip)
-    Repo.delete(host)
+    getHost(ip)
+    |> Repo.delete
   end
 
   def clusters do
@@ -36,8 +36,8 @@ defmodule InternalDB.API do
   end
 
   def removeCluster(ip, port) do
-    cluster = getCluster(ip, port)
-    Repo.delete(cluster)
+    getCluster(ip, port)
+    |> Repo.delete
   end
 
   def instances do
@@ -55,8 +55,8 @@ defmodule InternalDB.API do
   end
 
   def removeInstance(instance_id) do
-    instance = getInstance(instance_id)
-    Repo.delete(instance)
+    getInstance(instance_id)
+    |> Repo.delete
   end
 
   def bindings do
@@ -74,8 +74,8 @@ defmodule InternalDB.API do
   end
 
   def removeBinding(binding_id) do
-    binding = getBinding(binding_id)
-    Repo.delete(binding)
+    getBinding(binding_id)
+    |> Repo.delete
   end
 end
 

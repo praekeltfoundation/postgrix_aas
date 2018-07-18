@@ -30,6 +30,12 @@ defmodule InternalDB.RepoCase do
     Ecto.Adapters.SQL.query!(Repo, qry, [])
   end
 
+  defp addBinding(ip, hostname, port, db_name, instance_id, binding_id) do
+    addInstance(ip, hostname, port, db_name, instance_id)
+    qry = "INSERT INTO bindings VALUES (DEFAULT, '#{binding_id}', '#{instance_id}');"
+    Ecto.Adapters.SQL.query!(Repo, qry, [])
+  end
+
   test "querying all hosts and adding a new host" do
     ip = %Postgrex.INET{address: {127,0,0,1}}
     hostname = "example.com"
@@ -38,6 +44,37 @@ defmodule InternalDB.RepoCase do
     API.addHost(ip, hostname)
 
     assert [{ip, hostname}] == API.hosts
+  end
+
+  test "removing a host" do
+    ip = %Postgrex.INET{address: {127,0,0,1}}
+    hostname = "example.com"
+    port = 5432
+    db_name = "testdb"
+    instance_id = "instance1"
+    binding_id = "i1binding1"
+
+    addBinding(ip, hostname, port, db_name, instance_id, binding_id)
+
+    API.removeHost(ip)
+
+    assert [] == API.hosts
+    assert [] == API.clusters
+    assert [] == API.instances
+    assert [] == API.bindings
+  end
+
+  test "retrieving a host" do
+    ip = %Postgrex.INET{address: {127,0,0,1}}
+    hostname = "example.com"
+
+    addHost(ip, hostname)
+
+    case API.getHost(ip) do
+      %{ip: %Postgrex.INET{address: {127,0,0,1}}, hostname:  "example.com"} ->
+        assert true
+      _ -> assert false
+    end
   end
 
   test "querying all clusters and adding a new cluster" do
@@ -51,6 +88,37 @@ defmodule InternalDB.RepoCase do
     API.addCluster(ip, port)
 
     assert [{ip, port}] == API.clusters
+  end
+
+  test "removing a cluster" do
+    ip = %Postgrex.INET{address: {127,0,0,1}}
+    hostname = "example.com"
+    port = 5432
+    db_name = "testdb"
+    instance_id = "instance1"
+    binding_id = "i1binding1"
+
+    addBinding(ip, hostname, port, db_name, instance_id, binding_id)
+
+    API.removeCluster(ip, port)
+
+    assert [] == API.clusters
+    assert [] == API.instances
+    assert [] == API.bindings
+  end
+
+  test "retrieving a cluster" do
+    ip = %Postgrex.INET{address: {127,0,0,1}}
+    hostname = "example.com"
+    port = 5432
+
+    addCluster(ip, hostname, port)
+
+    case API.getCluster(ip, port) do
+      %{ip: %Postgrex.INET{address: {127,0,0,1}}, port:  5432} ->
+        assert true
+      _ -> assert false
+    end
   end
 
   test "querying all instances and adding a new instance" do
@@ -68,6 +136,38 @@ defmodule InternalDB.RepoCase do
     assert [{ip, port, db_name, instance_id}] == API.instances
   end
 
+  test "removing an instance" do
+    ip = %Postgrex.INET{address: {127,0,0,1}}
+    hostname = "example.com"
+    port = 5432
+    db_name = "testdb"
+    instance_id = "instance1"
+    binding_id = "i1binding1"
+
+    addBinding(ip, hostname, port, db_name, instance_id, binding_id)
+
+    API.removeInstance(instance_id)
+
+    assert [] == API.instances
+    assert [] == API.bindings
+  end
+
+  test "retrieving an instance" do
+    ip = %Postgrex.INET{address: {127,0,0,1}}
+    hostname = "example.com"
+    port = 5432
+    db_name = "testdb"
+    instance_id = "instance1"
+
+    addInstance(ip, hostname, port, db_name, instance_id)
+
+    case API.getInstance(instance_id) do
+      %{ip: %Postgrex.INET{address: {127,0,0,1}}, port: 5432, db_name: "testdb", instance_id: "instance1"} ->
+        assert true
+      _ -> assert false
+    end
+  end
+
   test "querying all bindings and adding a new binding" do
     ip = %Postgrex.INET{address: {127,0,0,1}}
     hostname = "example.com"
@@ -82,6 +182,37 @@ defmodule InternalDB.RepoCase do
     API.addBinding(instance_id, binding_id)
 
     assert [{instance_id, binding_id}] == API.bindings
+  end
+
+  test "removing a binding" do
+    ip = %Postgrex.INET{address: {127,0,0,1}}
+    hostname = "example.com"
+    port = 5432
+    db_name = "testdb"
+    instance_id = "instance1"
+    binding_id = "i1binding1"
+
+    addBinding(ip, hostname, port, db_name, instance_id, binding_id)
+    API.removeBinding(binding_id)
+
+    assert [] = API.bindings
+  end
+
+  test "retrieving a binding" do
+    ip = %Postgrex.INET{address: {127,0,0,1}}
+    hostname = "example.com"
+    port = 5432
+    db_name = "testdb"
+    instance_id = "instance1"
+    binding_id = "i1binding1"
+
+    addBinding(ip, hostname, port, db_name, instance_id, binding_id)
+
+    case API.getBinding(binding_id) do
+      %{binding_id: "i1binding1", instance_id: "instance1"} ->
+        assert true
+      _ -> assert false
+    end
   end
 
 end

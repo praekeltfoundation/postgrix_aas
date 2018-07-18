@@ -8,7 +8,6 @@ defmodule InternalDB.Clusters do
   schema "clusters" do
     field :ip, EctoNetwork.INET, primary_key: true
     field :port, :integer, primary_key: true
-    belongs_to :host, InternalDB.Hosts, references: :ip
   end
 
   @fields ~w(ip port)
@@ -19,6 +18,5 @@ defmodule InternalDB.Clusters do
     |> validate_number(:port, greater_than_or_equal_to: 0)
     |> validate_number(:port, less_than_or_equal_to: 65535)
     |> unique_constraint(:ip, name: "instances_pkey")
-    |> assoc_constraint(:host)
     end
 end

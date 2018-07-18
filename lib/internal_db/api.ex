@@ -12,6 +12,15 @@ defmodule InternalDB.API do
     |> Repo.insert!
   end
 
+  def getHost(ip) do
+    Repo.get_by(Hosts, ip: ip)
+  end
+
+  def removeHost(ip) do
+    getHost(ip)
+    |> Repo.delete
+  end
+
   def clusters do
     (from c in Clusters, select: {c.ip, c.port})
     |> Repo.all
@@ -20,6 +29,15 @@ defmodule InternalDB.API do
   def addCluster(ip, port) do
     Clusters.changeset(%Clusters{}, %{ip: ip, port: port})
     |> Repo.insert!
+  end
+
+  def getCluster(ip, port) do
+    Repo.get_by(Clusters, ip: ip, port: port)
+  end
+
+  def removeCluster(ip, port) do
+    getCluster(ip, port)
+    |> Repo.delete
   end
 
   def instances do
@@ -32,6 +50,15 @@ defmodule InternalDB.API do
     |> Repo.insert!
   end
 
+  def getInstance(instance_id) do
+    Repo.get_by(Instances, instance_id: instance_id)
+  end
+
+  def removeInstance(instance_id) do
+    getInstance(instance_id)
+    |> Repo.delete
+  end
+
   def bindings do
     (from b in Bindings, select: {b.instance_id, b.binding_id})
     |> Repo.all
@@ -42,5 +69,13 @@ defmodule InternalDB.API do
     |> Repo.insert!
   end
 
+  def getBinding(binding_id) do
+    Repo.get_by(Bindings, binding_id: binding_id)
+  end
+
+  def removeBinding(binding_id) do
+    getBinding(binding_id)
+    |> Repo.delete
+  end
 end
 

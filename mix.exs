@@ -8,7 +8,7 @@ defmodule PostgrixAas.MixProject do
       elixir: "~> 1.6",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      aliases: aliases(),
+      aliases: aliases()
     ]
   end
 
@@ -28,13 +28,13 @@ defmodule PostgrixAas.MixProject do
       {:ecto_network, "~> 0.6.0"},
       {:plug, "~> 1.4"},
       {:cowboy, "~> 2.3"},
+      {:credo, "~> 0.9.1", only: [:dev, :test], runtime: false}
     ]
   end
 
   defp aliases do
     [
-     "test": ["ecto.create --quiet", "ecto.migrate", "test"]
+      test: ["ecto.create --quiet", "ecto.migrate", "test"]
     ]
   end
-
 end

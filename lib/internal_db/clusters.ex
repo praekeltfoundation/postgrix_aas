@@ -4,6 +4,10 @@ defmodule InternalDB.Clusters do
   import Ecto.Changeset
   import Ecto.Query
 
+  @moduledoc """
+  Schema defining database clusters in the internal database.
+  """
+
   @primary_key {:id, :id, autogenerate: true}
   schema "clusters" do
     field :ip, EctoNetwork.INET, primary_key: true
@@ -16,7 +20,7 @@ defmodule InternalDB.Clusters do
     |> cast(params, @fields)
     |> validate_required([:ip, :port])
     |> validate_number(:port, greater_than_or_equal_to: 0)
-    |> validate_number(:port, less_than_or_equal_to: 65535)
+    |> validate_number(:port, less_than_or_equal_to: 65_535)
     |> unique_constraint(:ip, name: "instances_pkey")
-    end
+  end
 end

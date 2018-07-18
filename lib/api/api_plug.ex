@@ -1,6 +1,9 @@
 defmodule API.APIPlug do
   import Plug.Conn
 
+  @moduledoc """
+  RESTful interface for resource provisioning.
+  """
   def init(options), do: options
 
   def call(conn, _opts) do

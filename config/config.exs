@@ -31,4 +31,4 @@ config :postgrix_aas, ecto_repos: [InternalDB.Repo, PostgrixCluster.Repo]
 #
 #     import_config "#{Mix.env}.exs"
 
- import_config "#{Mix.env}.exs"
+import_config "#{Mix.env()}.exs"

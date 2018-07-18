@@ -11,7 +11,6 @@ config :postgrix_aas, InternalDB.Repo,
   port: 5432,
   pool: Ecto.Adapters.SQL.Sandbox
 
-
 config :postgrix_aas, PostgrixCluster.Repo,
   adapter: Ecto.Adapters.Postgres,
   database: "postgres_cluster",

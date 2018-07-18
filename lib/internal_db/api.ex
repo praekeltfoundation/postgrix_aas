@@ -10,13 +10,13 @@ defmodule InternalDB.API do
   def hosts do
     Hosts
     |> select([h], {h.ip, h.hostname})
-    |> Repo.all
+    |> Repo.all()
   end
 
   def addHost(ip, hostname) do
     %Hosts{}
     |> Hosts.changeset(%{ip: ip, hostname: hostname})
-    |> Repo.insert!
+    |> Repo.insert!()
   end
 
   def getHost(ip) do
@@ -26,19 +26,19 @@ defmodule InternalDB.API do
   def removeHost(ip) do
     ip
     |> getHost
-    |> Repo.delete
+    |> Repo.delete()
   end
 
   def clusters do
     Clusters
     |> select([c], {c.ip, c.port})
-    |> Repo.all
+    |> Repo.all()
   end
 
   def addCluster(ip, port) do
     %Clusters{}
     |> Clusters.changeset(%{ip: ip, port: port})
-    |> Repo.insert!
+    |> Repo.insert!()
   end
 
   def getCluster(ip, port) do
@@ -48,19 +48,19 @@ defmodule InternalDB.API do
   def removeCluster(ip, port) do
     ip
     |> getCluster(port)
-    |> Repo.delete
+    |> Repo.delete()
   end
 
   def instances do
-      Instances
-      |> select([i], {i.ip, i.port, i.db_name, i.instance_id})
-      |> Repo.all
+    Instances
+    |> select([i], {i.ip, i.port, i.db_name, i.instance_id})
+    |> Repo.all()
   end
 
   def addInstance(ip, port, db_name, instance_id) do
     %Instances{}
     |> Instances.changeset(%{ip: ip, port: port, db_name: db_name, instance_id: instance_id})
-    |> Repo.insert!
+    |> Repo.insert!()
   end
 
   def getInstance(instance_id) do
@@ -70,19 +70,19 @@ defmodule InternalDB.API do
   def removeInstance(instance_id) do
     instance_id
     |> getInstance
-    |> Repo.delete
+    |> Repo.delete()
   end
 
   def bindings do
     Bindings
     |> select([b], {b.instance_id, b.binding_id})
-    |> Repo.all
+    |> Repo.all()
   end
 
   def addBinding(instance_id, binding_id) do
     %Bindings{}
     |> Bindings.changeset(%{instance_id: instance_id, binding_id: binding_id})
-    |> Repo.insert!
+    |> Repo.insert!()
   end
 
   def getBinding(binding_id) do
@@ -92,7 +92,6 @@ defmodule InternalDB.API do
   def removeBinding(binding_id) do
     binding_id
     |> getBinding
-    |> Repo.delete
+    |> Repo.delete()
   end
 end
-

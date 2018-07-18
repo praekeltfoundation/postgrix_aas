@@ -10,8 +10,8 @@ defmodule InternalDB.Clusters do
 
   @primary_key {:id, :id, autogenerate: true}
   schema "clusters" do
-    field(:ip, EctoNetwork.INET, primary_key: true)
-    field(:port, :integer, primary_key: true)
+    field :ip, EctoNetwork.INET, primary_key: true
+    field :port, :integer, primary_key: true
   end
 
   @fields ~w(ip port)

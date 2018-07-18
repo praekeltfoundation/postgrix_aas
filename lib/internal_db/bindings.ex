@@ -8,8 +8,8 @@ defmodule InternalDB.Bindings do
 
   @primary_key {:id, :id, autogenerate: true}
   schema "bindings" do
-    field(:instance_id, :string)
-    field(:binding_id, :string, unique: true)
+    field :instance_id, :string
+    field :binding_id, :string, unique: true
   end
 
   def changeset(data, params \\ %{}) do

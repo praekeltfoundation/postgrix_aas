@@ -2,7 +2,7 @@
 # and its dependencies with the aid of the Mix.Config module.
 use Mix.Config
 
-config :postgrix_aas, ecto_repos: [InternalDB.Repo, PostgrixCluster.Repo]
+config :postgrix_aas, ecto_repos: [InternalDB.Repo]
 
 # This configuration is loaded before any dependency and is restricted
 # to this project. If another project depends on this project, this

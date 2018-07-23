@@ -14,29 +14,29 @@ defmodule InternalDB.RepoCase do
   end
 
   defp addHost(ip, hostname) do
-    qry = "INSERT INTO hosts VALUES (DEFAULT, '#{ip}', '#{hostname}');"
-    Ecto.Adapters.SQL.query!(Repo, qry, [])
+    qry = "INSERT INTO hosts VALUES (DEFAULT, $1, $2);"
+    Ecto.Adapters.SQL.query!(Repo, qry, [ip, hostname])
   end
 
   defp addCluster(ip, hostname, port) do
-    addHost(ip, port)
-    qry = "INSERT INTO clusters VALUES (DEFAULT, '#{ip}', #{port});"
-    Ecto.Adapters.SQL.query!(Repo, qry, [])
+    addHost(ip, hostname)
+    qry = "INSERT INTO clusters VALUES (DEFAULT, $1, $2);"
+    Ecto.Adapters.SQL.query!(Repo, qry, [ip, port])
   end
 
   defp addInstance(ip, hostname, port, db_name, instance_id) do
     addCluster(ip, hostname, port)
 
     qry =
-      "INSERT INTO instances VALUES (DEFAULT, '#{ip}', #{port}, '#{db_name}', '#{instance_id}');"
+      "INSERT INTO instances VALUES (DEFAULT, $1, $2, $3, $4);"
 
-    Ecto.Adapters.SQL.query!(Repo, qry, [])
+    Ecto.Adapters.SQL.query!(Repo, qry, [ip, port, db_name, instance_id])
   end
 
   defp addBinding(ip, hostname, port, db_name, instance_id, binding_id) do
     addInstance(ip, hostname, port, db_name, instance_id)
-    qry = "INSERT INTO bindings VALUES (DEFAULT, '#{binding_id}', '#{instance_id}');"
-    Ecto.Adapters.SQL.query!(Repo, qry, [])
+    qry = "INSERT INTO bindings VALUES (DEFAULT, $1, $2);"
+    Ecto.Adapters.SQL.query!(Repo, qry, [binding_id, instance_id])
   end
 
   test "querying all hosts and adding a new host" do

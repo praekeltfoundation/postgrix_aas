@@ -1,5 +1,7 @@
 use Mix.Config
 
+#TODO: Make these read configs from Vaultkeeper output
+
 config :postgrix_aas, InternalDB.Repo,
   adapter: Ecto.Adapters.Postgres,
   database: "internal_db",
@@ -9,13 +11,4 @@ config :postgrix_aas, InternalDB.Repo,
   port: 5432,
   pool: Ecto.Adapters.SQL.Sandbox
 
-config :postgrix_aas, PostgrixCluster.Repo,
-  adapter: Ecto.Adapters.Postgres,
-  database: "postgres_cluster",
-  username: "ps_cluster",
-  password: "mysecretpassword2",
-  hostname: "localhost",
-  port: 5432,
-  pool: Ecto.Adapters.SQL.Sandbox
-
-config :postgrix_aas, ecto_repos: [InternalDB.Repo, PostgrixCluster.Repo]
+config :postgrix_aas, ecto_repos: [InternalDB.Repo]

@@ -22,7 +22,7 @@ before_script:
   - psql -c "CREATE USER ps_internal WITH PASSWORD 'mysecretpassword1';" -U postgres
   - psql -c "ALTER USER ps_internal CREATEDB;" -U postgres
   - psql -c "ALTER USER postgres WITH PASSWORD 'mysecretpassword2';" -U postgres
-  - psql -c "ALTER USER postgres CREATEROLE CREATEROLE;" -U postgres
+  - psql -c "ALTER USER postgres CREATEROLE CREATEDB;" -U postgres
 script:
   - MIX_ENV=dev mix test
   - mix format --check-formatted

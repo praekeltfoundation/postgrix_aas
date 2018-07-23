@@ -25,6 +25,7 @@ defmodule PostgrixAas.MixProject do
     [
       {:ecto, "~> 2.0"},
       {:postgrex, "~> 0.13"},
+      {:poolboy, "~> 1.5.1"},
       {:ecto_network, "~> 0.6.0"},
       {:plug, "~> 1.4"},
       {:cowboy, "~> 2.3"},

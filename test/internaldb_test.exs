@@ -1,7 +1,7 @@
 defmodule InternalDB.RepoCase do
   use ExUnit.Case
   use ExUnit.CaseTemplate
-  alias InternalDB.{Repo, API, Hosts, Clusters}
+  alias InternalDB.{Repo, API}
 
   setup tags do
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(Repo)
@@ -27,8 +27,7 @@ defmodule InternalDB.RepoCase do
   defp addInstance(ip, hostname, port, db_name, instance_id) do
     addCluster(ip, hostname, port)
 
-    qry =
-      "INSERT INTO instances VALUES (DEFAULT, $1, $2, $3, $4);"
+    qry = "INSERT INTO instances VALUES (DEFAULT, $1, $2, $3, $4);"
 
     Ecto.Adapters.SQL.query!(Repo, qry, [ip, port, db_name, instance_id])
   end

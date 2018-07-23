@@ -15,42 +15,75 @@ defmodule PostgrixCluster.RepoCase do
     schema = "public"
     vault_user = "vault"
     db_owner = "owner"
-    on_exit fn ->
-      {:ok, pid} = Postgrex.start_link([hostname: "localhost", port: 5433, username: "postgres", password: "mysecretpassword2", database: "postgres_cluster"])
+    hostname = "localhost"
+
+    port =
+      cond do
+        Mix.env() == :test ->
+          5433
+
+        Mix.env() == :dev ->
+          5432
+
+        true ->
+          5433
+      end
+
+    username = "postgres"
+    password = "mysecretpassword2"
+    database = "postgres_cluster"
+
+    on_exit(fn ->
+      {:ok, pid} =
+        Postgrex.start_link(
+          hostname: hostname,
+          port: port,
+          username: username,
+          password: password,
+          database: database
+        )
+
       dropSchema(pid, schema)
       dropDatabase(pid, db_name)
       dropRole(pid, vault_user)
       dropRole(pid, db_owner)
-    end
-    {:ok, pid} = start_supervised({Postgrex, [hostname: "localhost", port: 5433, username: "postgres", password: "mysecretpassword2", database: "postgres_cluster"]})
+    end)
+
+    {:ok, pid} =
+      start_supervised(
+        {Postgrex,
+         [
+           hostname: hostname,
+           port: port,
+           username: username,
+           password: password,
+           database: database,
+           pool_size: 20,
+           pool_timeout: 15_000,
+           timeout: 15_000
+         ]}
+      )
+
     {:ok, pid: pid}
   end
 
-  defp roleExists(pid, role) do
-    case Postgrex.query(pid, "SELECT 1 FROM pg_roles WHERE rolname='#{role}';", []) do
+  defp roleExists!(pid, role) do
+    case Postgrex.query!(pid, "SELECT 1 FROM pg_roles WHERE rolname='#{role}';", []) do
       {:ok, result} -> result.rows == [[1]]
       _ -> false
     end
   end
 
-  defp databaseExists(pid, db_name) do
-    case Postgrex.query(pid, "SELECT 1 AS result FROM pg_database WHERE datname='#{db_name}';", []) do
-      {:ok, result} ->
-        result.rows == [[1]]
-      _ -> false
-    end
-  end
-
   defp dropRole(pid, role) do
-    Postgrex.query!(pid, "DROP ROLE IF EXISTS #{role};", [])
+    Postgrex.query(pid, "DROP ROLE IF EXISTS #{role};", [])
   end
 
   defp createDatabase(pid, db_name) do
-    Postgrex.query!(pid, "CREATE DATABASE #{db_name} WITH OWNER DEFAULT;", [])
+    Postgrex.query(pid, "CREATE DATABASE #{db_name} WITH OWNER DEFAULT;", [])
   end
 
   defp dropDatabase(pid, db_name) do
-    Postgrex.query!(pid, "DROP DATABASE IF EXISTS #{db_name};", [])
+    Postgrex.query(pid, "DROP DATABASE IF EXISTS #{db_name};", [])
   end
 
   defp createSchema(pid, schema) do
@@ -62,9 +95,9 @@ defmodule PostgrixCluster.RepoCase do
   end
 
   defp addVaultRole(pid, db_name, vault_user, vault_password) do
-    Postgrex.query!(pid, "CREATE ROLE #{vault_user} WITH CREATEROLE
+    Postgrex.query(pid, "CREATE ROLE #{vault_user} WITH CREATEROLE
     INHERIT LOGIN ENCRYPTED PASSWORD \'#{vault_password}\';", [])
-    Postgrex.query!(pid, "GRANT ALL PRIVILEGES ON DATABASE #{db_name} TO
+    Postgrex.query(pid, "GRANT ALL PRIVILEGES ON DATABASE #{db_name} TO
     #{vault_user} WITH GRANT OPTION;", [])
   end
 
@@ -74,7 +107,6 @@ defmodule PostgrixCluster.RepoCase do
 
     API.createDatabase(pid, db_name)
     assert API.databaseExists(pid, db_name) == true
-
   end
 
   test "add Vault master role", context do
@@ -88,7 +120,6 @@ defmodule PostgrixCluster.RepoCase do
     createSchema(pid, schema)
     API.addVaultRole(pid, db_name, vault_user, vault_password)
     assert API.roleExists(pid, vault_user) == true
-
   end
 
   test "add an owner role, grant the owner role to the Vault user", context do
@@ -109,6 +140,5 @@ defmodule PostgrixCluster.RepoCase do
 
     API.grantOwnerRole(pid, db_owner, vault_user)
     assert API.hasRole(pid, vault_user, db_owner) == true
-
   end
 end

@@ -106,7 +106,7 @@ defmodule PostgrixCluster.RepoCase do
     pid = context[:pid]
 
     API.createDatabase(pid, db_name)
-    assert API.databaseExists(pid, db_name) == true
+    assert API.databaseExists!(pid, db_name) == true
   end
 
   test "add Vault master role", context do
@@ -119,7 +119,7 @@ defmodule PostgrixCluster.RepoCase do
     createDatabase(pid, db_name)
     createSchema(pid, schema)
     API.addVaultRole(pid, db_name, vault_user, vault_password)
-    assert API.roleExists(pid, vault_user) == true
+    assert API.roleExists!(pid, vault_user) == true
   end
 
   test "add an owner role, grant the owner role to the Vault user", context do
@@ -136,9 +136,9 @@ defmodule PostgrixCluster.RepoCase do
     addVaultRole(pid, db_name, vault_user, vault_password)
 
     API.addOwnerRole(pid, db_name, db_owner, owner_pass)
-    assert API.roleExists(pid, db_owner) == true
+    assert API.roleExists!(pid, db_owner) == true
 
     API.grantOwnerRole(pid, db_owner, vault_user)
-    assert API.hasRole(pid, vault_user, db_owner) == true
+    assert API.hasRole!(pid, vault_user, db_owner) == true
   end
 end

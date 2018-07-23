@@ -25,7 +25,7 @@ defmodule PostgrixCluster.API do
     )
   end
 
-  def databaseExists(pid, db_name) do
+  def databaseExists!(pid, db_name) do
     case Postgrex.query(
            pid,
            "SELECT 1 AS result FROM pg_database WHERE datname='#{db_name}';",
@@ -82,7 +82,7 @@ defmodule PostgrixCluster.API do
     )
   end
 
-  def roleExists(pid, role) do
+  def roleExists!(pid, role) do
     case Postgrex.query(pid, "SELECT 1 FROM pg_roles WHERE rolname='#{role}';", []) do
       {:ok, result} -> result.rows == [[1]]
       _ -> false
@@ -110,7 +110,7 @@ defmodule PostgrixCluster.API do
     Postgrex.query(pid, "GRANT #{db_owner} TO #{vault_user};", [])
   end
 
-  def hasRole(pid, user, role) do
+  def hasRole!(pid, user, role) do
     case Postgrex.query(pid, "WITH RECURSIVE cte AS (
                               SELECT oid FROM pg_roles WHERE rolname = \'#{user}\'
                               UNION ALL SELECT m.roleid

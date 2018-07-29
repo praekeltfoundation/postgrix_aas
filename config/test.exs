@@ -13,18 +13,9 @@ config :postgrix_aas, InternalDB.Repo,
 
 config :postgrix_aas, ecto_repos: [InternalDB.Repo]
 
-config :postgrix_aas, PostgrixCluster.Test,
+config :postgrix_aas, PostgrixCluster,
   database: "postgres_cluster",
   username: "postgres",
   password: "mysecretpassword2",
   hostname: "localhost",
-  port: 5433,
-  url: "localhost:5433"
-
-config :postgrix_aas, PostgrixCluster,
-  pool: [
-    pool: DBConnection.Poolboy,
-    pool_size: 20,
-    host: "localhost",
-    database: "postgres_cluster"
-  ]
+  port: 5433

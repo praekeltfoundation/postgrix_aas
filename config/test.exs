@@ -18,4 +18,5 @@ config :postgrix_aas, PostgrixCluster,
   username: "postgres",
   password: "mysecretpassword2",
   hostname: "localhost",
-  port: 5433
+  port: 5433,
+  ownership_timeout: :infinity

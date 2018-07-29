@@ -38,63 +38,50 @@ defmodule PostgrixCluster.Server do
     )
   end
 
+  def deprovision(server, instance_id) do
+    GenServer.call(server, {:deprovision, instance_id})
+  end
+
+  @impl true
   def handle_call(
         {:provision,
         [ip: ip, port: port, db_name: db_name, instance_id: instance_id, vault_user: vault_user, vault_pass: vault_pass, db_owner: db_owner, owner_pass: owner_pass]},
         _from,
         state
       ) do
-    provision(
-      state.pid,
-      ip,
-      port,
-      db_name,
-      instance_id,
-      vault_user,
-      vault_pass,
-      db_owner,
-      owner_pass,
-      state.config
-    )
-  end
-
-  defp provision(
-         pid,
-         ip,
-         port,
-         db_name,
-         instance_id,
-         vault_user,
-         vault_pass,
-         db_owner,
-         owner_pass,
-         config
-       ) do
-    with {:ok, result} <- ClusterAPI.createDatabase(pid, db_name),
-         {:ok, pid2} <-
-           Postgrex.start_link(
-             hostname: ip,
-             port: port,
-             username: config[:username],
-             password: config[:password],
-             database: db_name
-           ),
-         {:ok, result} <- ClusterAPI.addOwnerRole(pid2, db_name, db_owner, owner_pass),
-         {:ok, result} <- ClusterAPI.addVaultRole(pid2, db_name, vault_user, vault_pass),
-         {:ok, result} <- ClusterAPI.grantOwnerRole(pid2, db_owner, vault_user),
-         {:ok, result} <- InternalDBAPI.addInstance(ip, port, db_name, instance_id) do
-      {:ok, "Database successfully provisioned: #{inspect result}"}
-    end
+        with {:ok, result} <- ClusterAPI.createDatabase(state.pid, db_name),
+        {:ok, pid2} <-
+          Postgrex.start_link(
+            hostname: ip,
+            port: port,
+            username: state.config[:username],
+            password: state.config[:password],
+            database: db_name
+          ),
+        {:ok, result} <- ClusterAPI.addOwnerRole(pid2, db_name, db_owner, owner_pass),
+        {:ok, result} <- ClusterAPI.addVaultRole(pid2, db_name, vault_user, vault_pass),
+        {:ok, result} <- ClusterAPI.grantOwnerRole(pid2, db_owner, vault_user),
+        {:ok, result} <- InternalDBAPI.addInstance(ip, port, db_name, instance_id) do
+     GenServer.stop(pid2)
+     {:reply, "Database successfully provisioned: #{inspect result}", state}
   else
-    error -> {:error, "Error provisioning database."}
+    error -> {:reply, "Error provisioning database: #{inspect error}", state}
   end
+end
 
-  def deprovision(pid, ip, port, db_name, instance_id, db_owner, vault_user) do
-    with {:ok, result} <- ClusterAPI.dropDatabase(db_name, db_owner),
-         {:ok, result} <- InternalDBAPI.removeInstance(instance_id) do
-      {:ok, "Database successfully deprovisioned: #{inspect result}"}
+  @impl true
+  def handle_call(
+        {:deprovision,
+        instance_id},
+        _from,
+        state
+      ) do
+        with result <- InternalDB.API.getInstance(instance_id),
+        {:ok, result} <- ClusterAPI.dropDatabase(state.pid, result.db_name),
+        {:ok, result} <- InternalDBAPI.removeInstance(instance_id) do
+     {:reply, "Database successfully deprovisioned: #{inspect result}", state}
+    else
+      error -> {:reply, "Error deprovisioning database: #{inspect error}", state}
     end
-  else
-    error -> {:error, "Error deprovisioning database: #{inspect error}"}
   end
 end

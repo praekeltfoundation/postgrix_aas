@@ -16,7 +16,7 @@ defmodule InternalDB.API do
   def addInstance(ip, port, db_name, instance_id) do
     %Instances{}
     |> Instances.changeset(%{ip: ip, port: port, db_name: db_name, instance_id: instance_id})
-    |> Repo.insert!()
+    |> Repo.insert()
   end
 
   def getInstance(instance_id) do
@@ -38,7 +38,7 @@ defmodule InternalDB.API do
   def addBinding(instance_id, binding_id) do
     %Bindings{}
     |> Bindings.changeset(%{instance_id: instance_id, binding_id: binding_id})
-    |> Repo.insert!()
+    |> Repo.insert()
   end
 
   def getBinding(binding_id) do

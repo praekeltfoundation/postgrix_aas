@@ -12,7 +12,7 @@ defmodule InternalDB.Instances do
     field :port, :integer
     field :db_name, :string
     field :instance_id, :string, unique: true
-    has_many :bindings, InternalDB.Bindings, foreign_key: :instance_id
+    #has_many :bindings, InternalDB.Bindings, foreign_key: :instance_id
   end
 
   @fields ~w(ip port db_name instance_id)

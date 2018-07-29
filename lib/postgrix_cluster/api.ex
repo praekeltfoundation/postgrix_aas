@@ -13,16 +13,10 @@ defmodule PostgrixCluster.API do
   end
 
   def dropDatabase(pid, db_name) do
-    Postgrex.transaction(
-      pid,
-      fn conn ->
-        Postgrex.query(conn, "SELECT pg_terminate_backend(pg_stat_activity.pid)
-                          FROM pg_stat_activity WHERE pg_stat_activity.datname = \'#{db_name}\'
-                          AND pid <> pg_backend_pid();", [])
-        Postgrex.query(conn, "DROP DATABASE IF EXISTS #{db_name};", [])
-      end,
-      []
-    )
+    Postgrex.query(pid, "SELECT pg_terminate_backend(pg_stat_activity.pid)
+                      FROM pg_stat_activity WHERE pg_stat_activity.datname = \'#{db_name}\'
+                      AND pid <> pg_backend_pid();", [])
+    Postgrex.query(pid, "DROP DATABASE IF EXISTS #{db_name};", [])
   end
 
   def databaseExists!(pid, db_name) do

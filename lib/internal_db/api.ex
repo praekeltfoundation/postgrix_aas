@@ -1,55 +1,11 @@
 defmodule InternalDB.API do
-  alias InternalDB.{Repo, Hosts, Clusters, Instances, Bindings}
+  alias InternalDB.{Repo, Instances, Bindings}
   import Ecto.Query
 
   @moduledoc """
   Provides functions that interact with the service's
   internal database to keep records on provisioned resources.
   """
-
-  def hosts do
-    Hosts
-    |> select([h], {h.ip, h.hostname})
-    |> Repo.all()
-  end
-
-  def addHost(ip, hostname) do
-    %Hosts{}
-    |> Hosts.changeset(%{ip: ip, hostname: hostname})
-    |> Repo.insert!()
-  end
-
-  def getHost(ip) do
-    Repo.get_by(Hosts, ip: ip)
-  end
-
-  def removeHost(ip) do
-    ip
-    |> getHost
-    |> Repo.delete()
-  end
-
-  def clusters do
-    Clusters
-    |> select([c], {c.ip, c.port})
-    |> Repo.all()
-  end
-
-  def addCluster(ip, port) do
-    %Clusters{}
-    |> Clusters.changeset(%{ip: ip, port: port})
-    |> Repo.insert!()
-  end
-
-  def getCluster(ip, port) do
-    Repo.get_by(Clusters, ip: ip, port: port)
-  end
-
-  def removeCluster(ip, port) do
-    ip
-    |> getCluster(port)
-    |> Repo.delete()
-  end
 
   def instances do
     Instances

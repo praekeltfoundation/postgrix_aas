@@ -42,17 +42,21 @@ defmodule PostgrixCluster.Server do
     GenServer.call(server, {:deprovision, instance_id})
   end
 
+  def rollbackProvision(server, db_name, instance_id) do
+    GenServer.call(server, {:rollbackprovision, instance_id, db_name})
+  end
+
   @impl true
   def handle_call(
         {:provision,
         [ip: ip, port: port, db_name: db_name, instance_id: instance_id, vault_user: vault_user, vault_pass: vault_pass, db_owner: db_owner, owner_pass: owner_pass]},
-        _from,
+        from,
         state
       ) do
         with {:ok, result} <- ClusterAPI.createDatabase(state.pid, db_name),
         {:ok, pid2} <-
           Postgrex.start_link(
-            hostname: ip,
+            hostname: state.config[:hostname],
             port: port,
             username: state.config[:username],
             password: state.config[:password],
@@ -65,7 +69,8 @@ defmodule PostgrixCluster.Server do
      GenServer.stop(pid2)
      {:reply, "Database successfully provisioned: #{inspect result}", state}
   else
-    error -> {:reply, "Error provisioning database: #{inspect error}", state}
+    _ -> handle_call({:rollbackprovision, instance_id, db_name}, from, state)
+    {:reply, "Error provisioning database. Rolling back changes.", state}
   end
 end
 
@@ -82,6 +87,24 @@ end
      {:reply, "Database successfully deprovisioned: #{inspect result}", state}
     else
       error -> {:reply, "Error deprovisioning database: #{inspect error}", state}
+      _ -> {:reply, "Error deprovisioning database.", state}
     end
   end
+
+  @impl true
+  def handle_call({:rollbackprovision, instance_id, db_name}, _from, state) do
+    if InternalDBAPI.getInstance(instance_id) != nil do
+      InternalDBAPI.removeInstance(instance_id)
+    end
+    if ClusterAPI.databaseExists!(state.pid, db_name) == true do
+      ClusterAPI.dropDatabase(state.pid, db_name)
+    end
+    {:reply, "Rolled back provision.", state}
+  end
+
+  @impl true
+  def handle_call({:_getstate}, _from, state) do
+    {:reply, state, state}
+  end
+
 end

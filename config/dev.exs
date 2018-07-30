@@ -9,7 +9,8 @@ config :postgrix_aas, InternalDB.Repo,
   password: "mysecretpassword1",
   hostname: "localhost",
   port: 5432,
-  pool: Ecto.Adapters.SQL.Sandbox
+  pool: Ecto.Adapters.SQL.Sandbox,
+  timeout: :infinity
 
 config :postgrix_aas, ecto_repos: [InternalDB.Repo]
 

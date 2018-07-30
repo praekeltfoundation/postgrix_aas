@@ -1,4 +1,4 @@
-defmodule PostgrixCluster.RepoCase do
+defmodule PostgrixCluster.Test do
   use ExUnit.Case
   use ExUnit.CaseTemplate
   alias PostgrixCluster.{API}

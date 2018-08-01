@@ -45,7 +45,6 @@ defmodule API.Router.Test do
     assert conn.state == :sent
     assert conn.status == 200
 
-    assert conn.resp_body ==
-            "{\"response\":\"Action successfully performed.\"}"
+    assert conn.resp_body == "{\"response\":\"Action successfully performed.\"}"
   end
 end

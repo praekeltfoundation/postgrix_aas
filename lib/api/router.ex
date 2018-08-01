@@ -28,7 +28,7 @@ defmodule API.Router do
       case conn.body_params do
         %{"ip" => ip, "port" => port, "db_name" => db_name, "instance_id" => instance_id} ->
           case provisionInstance(ip, port, db_name, instance_id) do
-            {:reply, result} -> {200, result}
+            {:reply, result} -> {200, success()}
           end
 
         _ ->
@@ -75,8 +75,8 @@ defmodule API.Router do
     {:reply, result}
   end
 
-  defp success(message) do
-    Jason.encode!(%{response: "Success: #{inspect(message)}"})
+  defp success() do
+    Jason.encode!(%{response: "Action successfully performed."})
   end
 
   defp error(message) do

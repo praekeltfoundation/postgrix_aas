@@ -46,6 +46,6 @@ defmodule API.Router.Test do
     assert conn.status == 200
 
     assert conn.resp_body ==
-             "Database successfully provisioned: %InternalDB.Instances{__meta__: #Ecto.Schema.Metadata<:loaded, \"instances\">, db_name: \"testdb\", id: 1, instance_id: \"instance_id\", ip: %Postgrex.INET{address: {127, 0, 0, 1}}, port: 5433}"
+            "{\"response\":\"Action successfully performed.\"}"
   end
 end

@@ -31,12 +31,4 @@ config :postgrix_aas, ecto_repos: [InternalDB.Repo]
 #
 #     import_config "#{Mix.env}.exs"
 
-config :postgrix_aas, PostgrixCluster,
-  database: "postgres_cluster",
-  username: "postgres",
-  password: "mysecretpassword2",
-  hostname: "localhost",
-  port: 5433,
-  ownership_timeout: :infinity
-
 import_config "#{Mix.env()}.exs"

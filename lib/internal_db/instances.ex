@@ -12,12 +12,14 @@ defmodule InternalDB.Instances do
     field :port, :integer
     field :db_name, :string
     field :instance_id, :string, unique: true
-    #has_many :bindings, InternalDB.Bindings, foreign_key: :instance_id
+    # has_many :bindings, InternalDB.Bindings, foreign_key: :instance_id
   end
 
   @fields ~w(ip port db_name instance_id)
   def changeset(data, params \\ %{}) do
-    change(data, params)
+    changeset = change(data, params)
+
+    changeset
     |> validate_ip(:ip)
     |> cast(params, @fields)
     |> validate_required([:ip, :port, :instance_id])
@@ -33,10 +35,10 @@ defmodule InternalDB.Instances do
 
         {:ok, result} ->
           []
+
         _ ->
           [{:error, "Error"}]
       end
     end)
   end
-
 end

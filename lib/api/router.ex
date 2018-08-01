@@ -30,6 +30,7 @@ defmodule API.Router do
           case provisionInstance(ip, port, db_name, instance_id) do
             {:reply, result} -> {200, result}
           end
+
         _ ->
           {422, missing_params([:ip, :port, :db_name, :instance_id])}
       end
@@ -44,6 +45,7 @@ defmodule API.Router do
           case deprovisionInstance(instance_id) do
             {:reply, result} -> {200, result}
           end
+
         _ ->
           {422, missing_params([:ip, :port, :db_name, :instance_id])}
       end
@@ -52,7 +54,19 @@ defmodule API.Router do
   end
 
   defp provisionInstance(ip, port, db_name, instance_id) do
-    result = ClusterServer.provision(ClusterAPI.Server, [ip: ip, port: port, db_name: db_name, instance_id: instance_id, vault_user: "vault", vault_pass: "pass", db_owner: "owner", owner_pass: "pass"])
+    result =
+      ClusterServer.provision(
+        ClusterAPI.Server,
+        ip: ip,
+        port: port,
+        db_name: db_name,
+        instance_id: instance_id,
+        vault_user: "vault",
+        vault_pass: "pass",
+        db_owner: "owner",
+        owner_pass: "pass"
+      )
+
     {:reply, result}
   end
 
@@ -81,7 +95,7 @@ defmodule API.Router do
   end
 
   defp missing_params(params) do
-    Jason.encode!(%{error: "Expected #{format_list(params)} as keys"})
+    Jason.encode!(%{error: "Expected #{format_list(params)} as JSON parameters."})
   end
 
   match(_, do: send_resp(conn, 404, "Oops!"))

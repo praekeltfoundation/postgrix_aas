@@ -79,7 +79,7 @@ defmodule PostgrixCluster.Server do
          {:ok, pid2} <-
            Postgrex.start_link(
              hostname: state.config[:hostname],
-             port: port,
+             port: state.config[:port],
              username: state.config[:username],
              password: state.config[:password],
              database: db_name

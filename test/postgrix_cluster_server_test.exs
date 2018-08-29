@@ -4,14 +4,12 @@ defmodule PostgrixCluster.Server.Test do
   alias PostgrixCluster.Server, as: Server
   alias PostgrixCluster.API, as: ClusterAPI
   alias InternalDB.API, as: InternalDBAPI
-  alias InternalDB.Repo, as: Repo
+  alias InternalDB.Repo
 
   setup tags do
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(Repo)
 
-    unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Repo, {:shared, self()})
-    end
+    Ecto.Adapters.SQL.Sandbox.mode(Repo, {:shared, self()})
 
     on_exit(fn ->
       :ok = Ecto.Adapters.SQL.Sandbox.checkout(Repo)
@@ -19,14 +17,16 @@ defmodule PostgrixCluster.Server.Test do
       {:ok, result} = Server.start_link(name: Cluster.Server)
       db_name = "test1"
       instance_id = "instance_id"
-      Server.rollbackProvision(Cluster.Server, db_name, instance_id)
+      db_owner = "owner"
+      vault_user = "vault"
+      Server.rollbackProvision(Cluster.Server, instance_id, db_name, db_owner, vault_user)
     end)
 
     {:ok, result} = Server.start_link(name: ClusterAPI.Server)
     :ok
   end
 
-  test "successfully provision a database instance and update internal records" do
+  test "test provisioning a database instance and updating internal records" do
     ip = "127.0.0.1"
     port = 5433
     db_name = "test1"
@@ -51,7 +51,7 @@ defmodule PostgrixCluster.Server.Test do
     assert InternalDBAPI.getInstance(instance_id) != nil
   end
 
-  test "unsuccessfully provision a database instance" do
+  test "test rolling back all operations if provision fails at intermediate steps" do
     ip = "badvalue"
     port = 5433
     db_name = "test1"
@@ -76,6 +76,8 @@ defmodule PostgrixCluster.Server.Test do
 
     assert InternalDBAPI.getInstance(instance_id) == nil
     state = GenServer.call(ClusterAPI.Server, {:_getstate})
-    assert ClusterAPI.databaseExists!(state.pid, db_name) == false
+    assert ClusterAPI.databaseExists?(state.pid, db_name) == false
+    assert ClusterAPI.roleExists?(state.pid, db_owner) == false
+    assert ClusterAPI.roleExists?(state.pid, vault_user) == false
   end
 end

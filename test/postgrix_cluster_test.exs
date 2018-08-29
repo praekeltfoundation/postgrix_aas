@@ -67,7 +67,7 @@ defmodule PostgrixCluster.Test do
     {:ok, pid: pid}
   end
 
-  defp roleExists!(pid, role) do
+  defp roleExists?(pid, role) do
     case Postgrex.query!(pid, "SELECT 1 FROM pg_roles WHERE rolname='#{role}';", []) do
       {:ok, result} -> result.rows == [[1]]
       _ -> false
@@ -106,7 +106,7 @@ defmodule PostgrixCluster.Test do
     pid = context[:pid]
 
     API.createDatabase(pid, db_name)
-    assert API.databaseExists!(pid, db_name) == true
+    assert API.databaseExists?(pid, db_name) == true
   end
 
   test "add Vault master role", context do
@@ -119,7 +119,7 @@ defmodule PostgrixCluster.Test do
     createDatabase(pid, db_name)
     createSchema(pid, schema)
     API.addVaultRole(pid, db_name, vault_user, vault_password)
-    assert API.roleExists!(pid, vault_user) == true
+    assert API.roleExists?(pid, vault_user) == true
   end
 
   test "add an owner role, grant the owner role to the Vault user", context do
@@ -136,9 +136,17 @@ defmodule PostgrixCluster.Test do
     addVaultRole(pid, db_name, vault_user, vault_password)
 
     API.addOwnerRole(pid, db_name, db_owner, owner_pass)
-    assert API.roleExists!(pid, db_owner) == true
+    assert API.roleExists?(pid, db_owner) == true
 
     API.grantOwnerRole(pid, db_owner, vault_user)
-    assert API.hasRole!(pid, vault_user, db_owner) == true
+    assert API.hasRole?(pid, vault_user, db_owner) == true
+  end
+
+  test "test that parameter validation only allows words", context do
+    value1 = "testword"
+    assert API.isValid?(value1) == true
+
+    value2 = "'--test;"
+    assert API.isValid?(value2) == false
   end
 end

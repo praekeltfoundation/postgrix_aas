@@ -11,7 +11,7 @@ defmodule PostgrixCluster.Server do
     @moduledoc """
     Internal state of the API server.
     """
-    defstruct pid: nil, config: nil
+    defstruct [:pid, :config]
   end
 
   def start_link(opts \\ []) do
@@ -26,28 +26,22 @@ defmodule PostgrixCluster.Server do
 
   def provision(
         server,
-        ip: ip,
-        port: port,
-        db_name: db_name,
-        instance_id: instance_id,
-        vault_user: vault_user,
-        vault_pass: vault_pass,
-        db_owner: db_owner,
-        owner_pass: owner_pass
+        opts \\ []
       ) do
+    params = [
+      ip: Keyword.get(opts, :ip),
+      port: Keyword.get(opts, :port),
+      db_name: Keyword.get(opts, :db_name),
+      instance_id: Keyword.get(opts, :instance_id),
+      vault_user: Keyword.get(opts, :vault_user),
+      vault_pass: Keyword.get(opts, :vault_pass),
+      db_owner: Keyword.get(opts, :db_owner),
+      owner_pass: Keyword.get(opts, :owner_pass)
+    ]
+
     GenServer.call(
       server,
-      {:provision,
-       [
-         ip: ip,
-         port: port,
-         db_name: db_name,
-         instance_id: instance_id,
-         vault_user: vault_user,
-         vault_pass: vault_pass,
-         db_owner: db_owner,
-         owner_pass: owner_pass
-       ]}
+      {:provision, params}
     )
   end
 
@@ -55,11 +49,11 @@ defmodule PostgrixCluster.Server do
     GenServer.call(server, {:deprovision, instance_id})
   end
 
-  def rollbackProvision(server, db_name, instance_id) do
-    GenServer.call(server, {:rollbackprovision, instance_id, db_name})
+  def rollbackProvision(server, instance_id, db_name, db_owner, vault_user) do
+    GenServer.call(server, {:rollbackprovision, instance_id, db_name, db_owner, vault_user})
   end
 
-  @impl true
+  @impl GenServer
   def handle_call(
         {:provision,
          [
@@ -92,12 +86,12 @@ defmodule PostgrixCluster.Server do
       {:reply, "Database successfully provisioned: #{inspect(result)}", state}
     else
       _ ->
-        handle_call({:rollbackprovision, instance_id, db_name}, from, state)
+        handle_call({:rollbackprovision, instance_id, db_name, db_owner, vault_user}, from, state)
         {:reply, "Error provisioning database. Rolling back changes.", state}
     end
   end
 
-  @impl true
+  @impl GenServer
   def handle_call(
         {:deprovision, instance_id},
         _from,
@@ -112,14 +106,22 @@ defmodule PostgrixCluster.Server do
     end
   end
 
-  @impl true
-  def handle_call({:rollbackprovision, instance_id, db_name}, _from, state) do
+  @impl GenServer
+  def handle_call({:rollbackprovision, instance_id, db_name, db_owner, vault_user}, _from, state) do
     if InternalDBAPI.getInstance(instance_id) != nil do
       InternalDBAPI.removeInstance(instance_id)
     end
 
-    if ClusterAPI.databaseExists!(state.pid, db_name) == true do
+    if ClusterAPI.databaseExists?(state.pid, db_name) == true do
       ClusterAPI.dropDatabase(state.pid, db_name)
+    end
+
+    if ClusterAPI.roleExists?(state.pid, db_owner) == true do
+      ClusterAPI.dropRole(state.pid, db_owner)
+    end
+
+    if ClusterAPI.roleExists?(state.pid, vault_user) == true do
+      ClusterAPI.dropRole(state.pid, vault_user)
     end
 
     {:reply, "Rolled back provision.", state}

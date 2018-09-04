@@ -119,10 +119,11 @@ defmodule PostgrixCluster.API do
     with true <- isValid?(role) do
       case Postgrex.query(pid, "SELECT 1 FROM pg_roles WHERE rolname='#{role}';", []) do
         {:ok, result} -> result.rows == [[1]]
+        {:error, reason} -> raise RuntimeError, message: IO.inspect(reason)
         _ -> false
       end
     else
-      _ -> false
+      _ -> raise ArgumentError, message: "Argument to function contains disallowed characters."
     end
   end
 

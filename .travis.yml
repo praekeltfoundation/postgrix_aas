@@ -8,7 +8,7 @@ dist: trusty
 cache: apt
 env:
   global:
-    - PGVERSION=9.6
+    - PGVERSION=10.4
   matrix:
     - MIX_ENV=dev
 install:
@@ -24,7 +24,7 @@ before_script:
   - psql -c "ALTER USER postgres WITH PASSWORD 'mysecretpassword2';" -U postgres
   - psql -c "ALTER USER postgres CREATEROLE CREATEDB;" -U postgres
 script:
-  - MIX_ENV=dev mix test --seed 388678
+  - MIX_ENV=dev mix test
   - mix format --check-formatted
   - mix credo
 after_script:

@@ -133,19 +133,24 @@ defmodule PostgrixCluster.Test do
     owner_pass = "ownerpass"
     pid = context[:pid]
 
-    createDatabase(pid, db_name)
+    {:ok, result} = createDatabase(pid, db_name)
+    IO.inspect(result)
     Process.sleep(100)
-    createSchema(pid, schema)
+    {:ok, result} = createSchema(pid, schema)
+    IO.inspect(result)
     Process.sleep(100)
-    addVaultRole(pid, db_name, vault_user, vault_password)
+    {:ok, result} = addVaultRole(pid, db_name, vault_user, vault_password)
+    IO.inspect(result)
     Process.sleep(100)
 
-    API.addOwnerRole(pid, db_name, db_owner, owner_pass)
+    {:ok, result} = API.addOwnerRole(pid, db_name, db_owner, owner_pass)
+    IO.inspect(result)
     # Sleep to avoid race condition where check is made before transaction completes
     Process.sleep(1000)
     assert API.roleExists?(pid, db_owner) == true
 
-    API.grantOwnerRole(pid, db_owner, vault_user)
+    {:ok, result} = API.grantOwnerRole(pid, db_owner, vault_user)
+    IO.inspect(result)
     Process.sleep(1000)
     assert API.hasRole?(pid, vault_user, db_owner) == true
   end

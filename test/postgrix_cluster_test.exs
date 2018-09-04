@@ -134,8 +134,11 @@ defmodule PostgrixCluster.Test do
     pid = context[:pid]
 
     createDatabase(pid, db_name)
+    Process.sleep(100)
     createSchema(pid, schema)
+    Process.sleep(100)
     addVaultRole(pid, db_name, vault_user, vault_password)
+    Process.sleep(100)
 
     API.addOwnerRole(pid, db_name, db_owner, owner_pass)
     # Sleep to avoid race condition where check is made before transaction completes

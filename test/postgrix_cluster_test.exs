@@ -106,6 +106,7 @@ defmodule PostgrixCluster.Test do
     pid = context[:pid]
 
     API.createDatabase(pid, db_name)
+    Process.sleep(1000)
     assert API.databaseExists?(pid, db_name) == true
   end
 
@@ -119,6 +120,7 @@ defmodule PostgrixCluster.Test do
     createDatabase(pid, db_name)
     createSchema(pid, schema)
     API.addVaultRole(pid, db_name, vault_user, vault_password)
+    Process.sleep(1000)
     assert API.roleExists?(pid, vault_user) == true
   end
 
@@ -141,6 +143,7 @@ defmodule PostgrixCluster.Test do
     assert API.roleExists?(pid, db_owner) == true
 
     API.grantOwnerRole(pid, db_owner, vault_user)
+    Process.sleep(1000)
     assert API.hasRole?(pid, vault_user, db_owner) == true
   end
 

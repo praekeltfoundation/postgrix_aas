@@ -137,7 +137,7 @@ defmodule PostgrixCluster.Test do
 
     API.addOwnerRole(pid, db_name, db_owner, owner_pass)
     #Sleep to avoid race condition where check is made before transaction completes
-    :timer.sleep(100)
+    Process.sleep(100)
     assert API.roleExists?(pid, db_owner) == true
 
     API.grantOwnerRole(pid, db_owner, vault_user)

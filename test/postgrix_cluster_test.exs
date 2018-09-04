@@ -136,7 +136,7 @@ defmodule PostgrixCluster.Test do
     addVaultRole(pid, db_name, vault_user, vault_password)
 
     API.addOwnerRole(pid, db_name, db_owner, owner_pass)
-    #Sleep to avoid race condition where check is made before transaction completes
+    # Sleep to avoid race condition where check is made before transaction completes
     Process.sleep(1000)
     assert API.roleExists?(pid, db_owner) == true
 

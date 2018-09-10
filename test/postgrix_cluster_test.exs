@@ -74,6 +74,15 @@ defmodule PostgrixCluster.Test do
     end
   end
 
+  defp schemaExists?(pid, schema) do
+    with {:ok, result} <-
+          Postgrex.query(pid, "SELECT schema_name FROM information_schema.schemata WHERE schema_name = '#{schema}';", []) do
+        result.rows == [[1]]
+      else
+      _ -> {:error, "Error checking if schema exists."}
+      end
+    end
+
   defp dropRole(pid, role) do
     Postgrex.query(pid, "DROP ROLE IF EXISTS #{role};", [])
   end
@@ -87,7 +96,9 @@ defmodule PostgrixCluster.Test do
   end
 
   defp createSchema(pid, schema) do
-    Postgrex.query(pid, "CREATE SCHEMA #{schema};", [])
+    if !schemaExists?(pid, schema) do
+      Postgrex.query(pid, "CREATE SCHEMA #{schema};", [])
+    end
   end
 
   defp dropSchema(pid, schema) do

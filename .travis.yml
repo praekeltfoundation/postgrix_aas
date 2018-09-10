@@ -3,9 +3,8 @@ elixir:
   - 1.6.6
 otp_release:
   - 20.3
-before_install:
-  dist: trusty
-  cache: apt
+dist: trusty
+cache: apt
 env:
   global:
     - PGVERSION=9.6

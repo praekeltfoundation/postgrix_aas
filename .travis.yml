@@ -4,7 +4,8 @@ elixir:
 otp_release:
   - 20.2
 before_install:
-dist: trusty
+dist: xenial
+sudo: true
 cache: apt
 addons:
   apt:
@@ -12,6 +13,8 @@ addons:
       - postgresql-10
       - postgresql-client-10
   postgresql: 10.4
+services:
+  - postgresql
 env:
   global:
     - PGVERSION=10.4

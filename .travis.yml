@@ -3,22 +3,12 @@ elixir:
   - 1.6.6
 otp_release:
   - 20.3
-  
-dist: trusty
-sudo: true
-cache: apt
-
-addons:
-  apt:
-    packages:
-      - postgresql-10
-      - postgresql-client-10
-  postgresql: 10
-services:
-  - postgresql
+before_install:
+  dist: trusty
+  cache: apt
 env:
   global:
-    - PGVERSION=10.4
+    - PGVERSION=9.6
   matrix:
     - MIX_ENV=dev
 install:

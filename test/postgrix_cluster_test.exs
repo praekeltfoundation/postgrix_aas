@@ -87,7 +87,7 @@ defmodule PostgrixCluster.Test do
   end
 
   defp createSchema(pid, schema) do
-    Postgrex.query(pid, "CREATE SCHEMA IF NOT EXISTS #{schema};", [])
+    Postgrex.query(pid, "CREATE SCHEMA #{schema};", [])
   end
 
   defp dropSchema(pid, schema) do

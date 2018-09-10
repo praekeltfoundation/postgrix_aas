@@ -1,12 +1,11 @@
+dist: xenial
+sudo: true
+cache: apt
 language: elixir
 elixir:
   - 1.6.6
 otp_release:
   - 20.2
-before_install:
-dist: xenial
-sudo: true
-cache: apt
 addons:
   apt:
     packages:

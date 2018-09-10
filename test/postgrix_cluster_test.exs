@@ -135,8 +135,8 @@ defmodule PostgrixCluster.Test do
     createSchema(pid, schema)
     addVaultRole(pid, db_name, vault_user, vault_password)
 
-    API.addOwnerRole(pid, db_name, db_owner, owner_pass)
-    Process.sleep(500)
+    debug = API.addOwnerRole(pid, db_name, db_owner, owner_pass)
+    IO.inspect(debug)
     assert API.roleExists?(pid, db_owner) == true
 
     API.grantOwnerRole(pid, db_owner, vault_user)

@@ -62,7 +62,7 @@ defmodule PostgrixCluster.API do
              pid,
              fn conn ->
                Postgrex.query(conn, "CREATE ROLE #{vault_user} WITH CREATEROLE
-                              INHERIT LOGIN ENCRYPTED PASSWORD \'#{vault_password}\';", [])
+                              INHERIT LOGIN ENCRYPTED PASSWORD '#{vault_password}';", [])
                Postgrex.query(conn, "GRANT ALL PRIVILEGES ON DATABASE #{db_name} TO
                               #{vault_user} WITH GRANT OPTION;", [])
              end,
@@ -137,7 +137,7 @@ defmodule PostgrixCluster.API do
              fn conn ->
                Postgrex.query(
                  conn,
-                 "CREATE ROLE #{db_owner} WITH LOGIN ENCRYPTED PASSWORD \'#{owner_password}\';",
+                 "CREATE ROLE #{db_owner} WITH LOGIN ENCRYPTED PASSWORD '#{owner_password}';",
                  []
                )
 
@@ -166,14 +166,14 @@ defmodule PostgrixCluster.API do
     with true <- isValid?(user),
          true <- isValid?(role) do
       case Postgrex.query(pid, "WITH RECURSIVE cte AS (
-                              SELECT oid FROM pg_roles WHERE rolname = \'#{user}\'
+                              SELECT oid FROM pg_roles WHERE rolname = '#{user}'
                               UNION ALL SELECT m.roleid
                               FROM   cte
                               JOIN   pg_auth_members m ON m.member = cte.oid)
                               SELECT 1
                               FROM cte, pg_roles
                               WHERE cte.oid = pg_roles.oid
-                              AND rolname = \'#{role}\';", []) do
+                              AND rolname = '#{role}';", []) do
         {:ok, result} -> result.rows == [[1]]
         _ -> false
       end

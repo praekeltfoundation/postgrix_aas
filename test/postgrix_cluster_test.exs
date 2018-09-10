@@ -96,7 +96,7 @@ defmodule PostgrixCluster.Test do
 
   defp addVaultRole(pid, db_name, vault_user, vault_password) do
     Postgrex.query(pid, "CREATE ROLE #{vault_user} WITH CREATEROLE
-    INHERIT LOGIN ENCRYPTED PASSWORD \'#{vault_password}\';", [])
+    INHERIT LOGIN ENCRYPTED PASSWORD '#{vault_password}';", [])
     Postgrex.query(pid, "GRANT ALL PRIVILEGES ON DATABASE #{db_name} TO
     #{vault_user} WITH GRANT OPTION;", [])
   end

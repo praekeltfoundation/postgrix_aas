@@ -15,6 +15,8 @@ install:
   - mix local.rebar --force
   - mix local.hex --force
   - mix deps.get
+addons:
+  postgresql: "10.4"
 before_script:
   - mix compile
   - psql -c "CREATE DATABASE internal_db;" -U postgres

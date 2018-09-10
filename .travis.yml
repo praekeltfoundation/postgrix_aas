@@ -6,6 +6,12 @@ otp_release:
 before_install:
 dist: trusty
 cache: apt
+addons:
+  apt:
+    packages:
+      - postgresql-10
+      - postgresql-client-10
+  postgresql: 10.4
 env:
   global:
     - PGVERSION=10.4
@@ -15,8 +21,6 @@ install:
   - mix local.rebar --force
   - mix local.hex --force
   - mix deps.get
-addons:
-  postgresql: "10.4"
 before_script:
   - mix compile
   - psql -c "CREATE DATABASE internal_db;" -U postgres

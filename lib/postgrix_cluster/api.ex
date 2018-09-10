@@ -16,13 +16,17 @@ defmodule PostgrixCluster.API do
 
   def schemaExists?(pid, schema) do
     with true <- isValid?(schema),
-        {:ok, result} <-
-          Postgrex.query(pid, "SELECT schema_name FROM information_schema.schemata WHERE schema_name = '#{schema}';", []) do
-        result.rows == [[1]]
-      else
+         {:ok, result} <-
+           Postgrex.query(
+             pid,
+             "SELECT schema_name FROM information_schema.schemata WHERE schema_name = '#{schema}';",
+             []
+           ) do
+      result.rows == [[1]]
+    else
       _ -> {:error, "Error checking if schema exists."}
-      end
     end
+  end
 
   def createSchema(pid, schema) do
     with true <- isValid?(schema),

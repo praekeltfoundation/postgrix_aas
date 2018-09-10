@@ -76,12 +76,16 @@ defmodule PostgrixCluster.Test do
 
   defp schemaExists?(pid, schema) do
     with {:ok, result} <-
-          Postgrex.query(pid, "SELECT schema_name FROM information_schema.schemata WHERE schema_name = '#{schema}';", []) do
-        result.rows == [[1]]
-      else
+           Postgrex.query(
+             pid,
+             "SELECT schema_name FROM information_schema.schemata WHERE schema_name = '#{schema}';",
+             []
+           ) do
+      result.rows == [[1]]
+    else
       _ -> {:error, "Error checking if schema exists."}
-      end
     end
+  end
 
   defp dropRole(pid, role) do
     Postgrex.query(pid, "DROP ROLE IF EXISTS #{role};", [])
@@ -143,12 +147,10 @@ defmodule PostgrixCluster.Test do
     pid = context[:pid]
 
     createDatabase(pid, db_name)
-    debug = createSchema(pid, schema)
-    IO.inspect(debug)
+    createSchema(pid, schema)
     addVaultRole(pid, db_name, vault_user, vault_password)
 
-    debug = API.addOwnerRole(pid, db_name, db_owner, owner_pass)
-    IO.inspect(debug)
+    API.addOwnerRole(pid, db_name, db_owner, owner_pass)
     assert API.roleExists?(pid, db_owner) == true
 
     API.grantOwnerRole(pid, db_owner, vault_user)

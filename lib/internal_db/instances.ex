@@ -30,13 +30,13 @@ defmodule InternalDB.Instances do
     validate_change(changeset, field, fn _, ip ->
       case EctoNetwork.INET.cast(ip) do
         {:ok, %Postgrex.INET{address: {:error, :einval}}} ->
-          [{:error, "Invalid IP format"}]
+          [{:error, "Error casting IP address to %Postgrex.INET{}: Invalid IP format"}]
 
         {:ok, result} ->
           []
 
         _ ->
-          [{:error, "Error"}]
+          [{:error, "Unknown error validating IP address."}]
       end
     end)
   end

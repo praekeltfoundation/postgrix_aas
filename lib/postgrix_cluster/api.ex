@@ -26,7 +26,7 @@ defmodule PostgrixCluster.API do
   def dropDatabase(pid, db_name) do
     with true <- isValid?(db_name),
          {:ok, result} <- Postgrex.query(pid, "SELECT pg_terminate_backend(pg_stat_activity.pid)
-                      FROM pg_stat_activity WHERE pg_stat_activity.datname = \'#{db_name}\'
+                      FROM pg_stat_activity WHERE pg_stat_activity.datname = '#{db_name}'
                       AND pid <> pg_backend_pid();", []),
          {:ok, result} <- Postgrex.query(pid, "DROP DATABASE IF EXISTS #{db_name};", []) do
       {:ok, result}

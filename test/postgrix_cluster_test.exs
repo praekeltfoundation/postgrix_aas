@@ -132,7 +132,8 @@ defmodule PostgrixCluster.Test do
     pid = context[:pid]
 
     createDatabase(pid, db_name)
-    createSchema(pid, schema)
+    debug = createSchema(pid, schema)
+    IO.inspect(debug)
     addVaultRole(pid, db_name, vault_user, vault_password)
 
     debug = API.addOwnerRole(pid, db_name, db_owner, owner_pass)

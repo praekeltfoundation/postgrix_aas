@@ -25,12 +25,12 @@ defmodule PostgrixAas.MixProject do
     [
       {:ecto, "~> 2.0"},
       {:postgrex, "~> 0.13"},
-      {:poolboy, "~> 1.5.1"},
       {:ecto_network, "~> 0.6.0"},
       {:plug, "~> 1.4"},
       {:cowboy, "~> 2.3"},
       {:credo, "~> 0.9.1", only: [:dev, :test], runtime: false},
-      {:jason, "~> 1.1"}
+      {:jason, "~> 1.1"},
+      {:excoveralls, "~> 0.5.7", only: [:dev, :test]},
     ]
   end
 

@@ -45,7 +45,7 @@ defmodule API.Router do
           {200, success()}
 
         _ ->
-          {422, missing_params([:ip, :port, :db_name, :instance_id])}
+          {422, missing_params([:instance_id])}
       end
 
     send_resp(conn, status, body)
@@ -71,10 +71,6 @@ defmodule API.Router do
 
   defp success() do
     Jason.encode!(%{response: "Action successfully performed."})
-  end
-
-  defp error(message) do
-    Jason.encode!(%{response: "Error: #{inspect(message)}"})
   end
 
   defp format_list(list) do

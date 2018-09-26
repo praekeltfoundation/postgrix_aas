@@ -1,6 +1,6 @@
+# This file is responsible for configuring your application
+# and its dependencies with the aid of the Mix.Config module.
 use Mix.Config
-
-# TODO: Make these read configs from Vaultkeeper output
 
 config :postgrix_aas, InternalDB.Repo,
   adapter: Ecto.Adapters.Postgres,
@@ -19,5 +19,5 @@ config :postgrix_aas, PostgrixCluster,
   username: "postgres",
   password: "mysecretpassword2",
   hostname: "localhost",
-  port: 5432,
+  port: 5433,
   ownership_timeout: :infinity

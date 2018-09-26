@@ -21,10 +21,10 @@ defmodule PostgrixCluster.Test do
 
     port =
       cond do
-        Mix.env() == :test ->
+        Mix.env() == :testlocal ->
           5433
 
-        Mix.env() == :dev ->
+        Mix.env() == :test ->
           5432
 
         true ->

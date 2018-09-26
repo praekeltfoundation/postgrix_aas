@@ -29,6 +29,8 @@ script:
 after_script:
   - mix deps.get --only docs
   - MIX_ENV=docs mix inch.report
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
 notifications:
   recipients:
     - paracetamolboy@gmail.com

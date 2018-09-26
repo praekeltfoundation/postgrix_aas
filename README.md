@@ -1,5 +1,8 @@
 # PostgrixAas
 
+[![Build Status](https://travis-ci.com/praekeltfoundation/postgrix_aas.svg?branch=develop)](https://travis-ci.com/praekeltfoundation/postgrix_aas)
+[![Coverage Status](https://coveralls.io/repos/github/praekeltfoundation/postgrix_aas/badge.svg?branch=develop)](https://coveralls.io/github/praekeltfoundation/postgrix_aas?branch=develop)
+
 **TODO: Add description**
 
 ## Installation

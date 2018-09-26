@@ -1,3 +1,5 @@
+# This file is responsible for configuring your application
+# and its dependencies with the aid of the Mix.Config module.
 use Mix.Config
 
 config :postgrix_aas, InternalDB.Repo,
@@ -7,17 +9,15 @@ config :postgrix_aas, InternalDB.Repo,
   password: "mysecretpassword1",
   hostname: "localhost",
   port: 5432,
-  pool: Ecto.Adapters.SQL.Sandbox
+  pool: Ecto.Adapters.SQL.Sandbox,
+  timeout: :infinity
 
+config :postgrix_aas, ecto_repos: [InternalDB.Repo]
 
-config :postgrix_aas, Postgrix_Cluster.Repo,
-  adapter: Ecto.Adapters.Postgres,
+config :postgrix_aas, PostgrixCluster,
   database: "postgres_cluster",
-  username: "ps_cluster",
+  username: "postgres",
   password: "mysecretpassword2",
   hostname: "localhost",
-  port: 5432,
-  pool: Ecto.Adapters.SQL.Sandbox
-
-config :postgrix_aas, ecto_repos: [InternalDB.Repo, Postgrix_Cluster.Repo]
-
+  port: 5433,
+  ownership_timeout: :infinity

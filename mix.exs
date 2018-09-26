@@ -9,6 +9,7 @@ defmodule PostgrixAas.MixProject do
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       aliases: aliases(),
+      test_coverage: [tool: ExCoveralls]
     ]
   end
 
@@ -28,13 +29,15 @@ defmodule PostgrixAas.MixProject do
       {:ecto_network, "~> 0.6.0"},
       {:plug, "~> 1.4"},
       {:cowboy, "~> 2.3"},
+      {:credo, "~> 0.9.1", only: [:test, :dev], runtime: false},
+      {:jason, "~> 1.1"},
+      {:excoveralls, "~> 0.5.7", only: :test}
     ]
   end
 
   defp aliases do
     [
-     "test": ["ecto.create --quiet", "ecto.migrate", "test"]
+      test: ["ecto.create --quiet", "ecto.migrate", "test"]
     ]
   end
-
 end

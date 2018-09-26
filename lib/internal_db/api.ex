@@ -1,46 +1,53 @@
 defmodule InternalDB.API do
-  alias InternalDB.{Repo, Hosts, Clusters, Instances, Bindings}
+  alias InternalDB.{Repo, Instances, Bindings}
   import Ecto.Query
 
-  def hosts do
-    (from h in Hosts, select: {h.ip, h.hostname})
-    |> Repo.all
-  end
-
-  def addHost(ip, hostname) do
-    Hosts.changeset(%Hosts{}, %{ip: ip, hostname: hostname})
-    |> Repo.insert!
-  end
-
-  def clusters do
-    (from c in Clusters, select: {c.ip, c.port})
-    |> Repo.all
-  end
-
-  def addCluster(ip, port) do
-    Clusters.changeset(%Clusters{}, %{ip: ip, port: port})
-    |> Repo.insert!
-  end
+  @moduledoc """
+  Provides functions that interact with the service's
+  internal database to keep records on provisioned resources.
+  """
 
   def instances do
-      (from i in Instances, select: {i.ip, i.port, i.db_name, i.instance_id})
-      |> Repo.all
+    Instances
+    |> select([i], {i.ip, i.port, i.db_name, i.instance_id})
+    |> Repo.all()
   end
 
   def addInstance(ip, port, db_name, instance_id) do
-    Instances.changeset(%Instances{}, %{ip: ip, port: port, db_name: db_name, instance_id: instance_id})
-    |> Repo.insert!
+    %Instances{}
+    |> Instances.changeset(%{ip: ip, port: port, db_name: db_name, instance_id: instance_id})
+    |> Repo.insert()
+  end
+
+  def getInstance(instance_id) do
+    Repo.get_by(Instances, instance_id: instance_id)
+  end
+
+  def removeInstance(instance_id) do
+    instance_id
+    |> getInstance
+    |> Repo.delete()
   end
 
   def bindings do
-    (from b in Bindings, select: {b.instance_id, b.binding_id})
-    |> Repo.all
+    Bindings
+    |> select([b], {b.instance_id, b.binding_id})
+    |> Repo.all()
   end
 
   def addBinding(instance_id, binding_id) do
-    Bindings.changeset(%Bindings{}, %{instance_id: instance_id, binding_id: binding_id})
-    |> Repo.insert!
+    %Bindings{}
+    |> Bindings.changeset(%{instance_id: instance_id, binding_id: binding_id})
+    |> Repo.insert()
   end
 
-end
+  def getBinding(binding_id) do
+    Repo.get_by(Bindings, binding_id: binding_id)
+  end
 
+  def removeBinding(binding_id) do
+    binding_id
+    |> getBinding
+    |> Repo.delete()
+  end
+end

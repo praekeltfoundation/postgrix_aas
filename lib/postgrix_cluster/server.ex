@@ -127,7 +127,7 @@ defmodule PostgrixCluster.Server do
     {:reply, "Rolled back provision.", state}
   end
 
-  @impl true
+  @impl GenServer
   def handle_call({:_getstate}, _from, state) do
     {:reply, state, state}
   end

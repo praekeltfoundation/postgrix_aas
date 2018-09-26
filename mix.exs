@@ -31,7 +31,7 @@ defmodule PostgrixAas.MixProject do
       {:cowboy, "~> 2.3"},
       {:credo, "~> 0.9.1", only: [:dev, :test], runtime: false},
       {:jason, "~> 1.1"},
-      {:excoveralls, "~> 0.5.7", only: [:dev, :test]},
+      {:excoveralls, "~> 0.5.7", only: [:dev]},
     ]
   end
 

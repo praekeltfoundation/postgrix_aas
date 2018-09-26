@@ -26,7 +26,7 @@ defmodule PostgrixCluster.Test do
           5432
 
         true ->
-          5433
+          5432
       end
 
     username = "postgres"

@@ -17,11 +17,9 @@ defmodule PostgrixCluster.Test do
     db_owner = "owner"
     hostname = "localhost"
 
-    IO.inspect(Mix.env())
-
     port =
       cond do
-        Mix.env() == :testlocal ->
+        Mix.env() == :dev ->
           5433
 
         Mix.env() == :test ->

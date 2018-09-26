@@ -8,7 +8,8 @@ defmodule PostgrixAas.MixProject do
       elixir: "~> 1.6",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      aliases: aliases()
+      aliases: aliases(),
+      test_coverage: [tool: ExCoveralls]
     ]
   end
 
@@ -28,7 +29,9 @@ defmodule PostgrixAas.MixProject do
       {:ecto_network, "~> 0.6.0"},
       {:plug, "~> 1.4"},
       {:cowboy, "~> 2.3"},
-      {:credo, "~> 0.9.1", only: [:dev, :test], runtime: false}
+      {:credo, "~> 0.9.1", only: [:test, :dev], runtime: false},
+      {:jason, "~> 1.1"},
+      {:excoveralls, "~> 0.5.7", only: :test}
     ]
   end
 

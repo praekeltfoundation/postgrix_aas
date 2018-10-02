@@ -1,7 +1,7 @@
 defmodule InternalDB.RepoCase do
   use ExUnit.Case
   use ExUnit.CaseTemplate
-  alias InternalDB.{Repo, API}
+  alias InternalDB.{Repo, API, Instances}
 
   setup tags do
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(Repo)
@@ -34,6 +34,15 @@ defmodule InternalDB.RepoCase do
     API.addInstance(ip, port, db_name, instance_id)
 
     assert [{ip, port, db_name, instance_id}] == API.instances()
+  end
+
+  test "adding a new instance with an invalid IP" do
+    ip = "invalid"
+    port = 5432
+    db_name = "testdb"
+    instance_id = "instance1"
+    API.addInstance(ip, port, db_name, instance_id)
+    assert [] == API.instances()
   end
 
   test "removing an instance" do

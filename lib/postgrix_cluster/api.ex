@@ -22,7 +22,7 @@ defmodule PostgrixCluster.API do
              "SELECT schema_name FROM information_schema.schemata WHERE schema_name = '#{schema}';",
              []
            ) do
-      result.rows == [[1]]
+      result.num_rows == 1
     else
       _ -> {:error, "Error checking if schema exists."}
     end
@@ -30,7 +30,7 @@ defmodule PostgrixCluster.API do
 
   def createSchema(pid, schema) do
     with true <- isValid?(schema),
-         true <- schemaExists?(pid, schema),
+         false <- schemaExists?(pid, schema),
          {:ok, result} <- Postgrex.query(pid, "CREATE SCHEMA #{schema};", []) do
       {:ok, result}
     else
@@ -134,7 +134,7 @@ defmodule PostgrixCluster.API do
   def roleExists?(pid, role) do
     with true <- isValid?(role) do
       case Postgrex.query(pid, "SELECT 1 FROM pg_roles WHERE rolname='#{role}';", []) do
-        {:ok, result} -> result.rows == [[1]]
+        {:ok, result} -> result.num_rows == 1
         {:error, reason} -> raise RuntimeError, message: reason
         _ -> false
       end
@@ -190,7 +190,8 @@ defmodule PostgrixCluster.API do
                               FROM cte, pg_roles
                               WHERE cte.oid = pg_roles.oid
                               AND rolname = '#{role}';", []) do
-        {:ok, result} -> result.rows == [[1]]
+        {:ok, result} ->
+          result.num_rows == 1
         _ -> false
       end
     else

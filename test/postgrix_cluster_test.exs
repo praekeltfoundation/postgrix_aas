@@ -110,10 +110,14 @@ defmodule PostgrixCluster.Test do
   end
 
   defp addVaultRole(pid, db_name, vault_user, vault_password) do
-    Postgrex.query(pid, "CREATE ROLE #{vault_user} WITH CREATEROLE
-    INHERIT LOGIN ENCRYPTED PASSWORD '#{vault_password}';", [])
-    Postgrex.query(pid, "GRANT ALL PRIVILEGES ON DATABASE #{db_name} TO
-    #{vault_user} WITH GRANT OPTION;", [])
+    Postgrex.transaction(
+             pid,
+             fn conn ->
+               Postgrex.query(conn, "CREATE ROLE #{vault_user} WITH CREATEROLE
+                              INHERIT LOGIN ENCRYPTED PASSWORD '#{vault_password}';", [])
+               Postgrex.query(conn, "GRANT ALL PRIVILEGES ON DATABASE #{db_name} TO
+                              #{vault_user} WITH GRANT OPTION;", [])
+             end)
   end
 
   test "create a database", context do
@@ -137,6 +141,20 @@ defmodule PostgrixCluster.Test do
     assert API.roleExists?(pid, vault_user) == true
   end
 
+  test "check if schema exists", context do
+    db_name = "testdb"
+    schema = "public"
+    vault_user = "vault"
+    vault_password = "vaultpass"
+    pid = context[:pid]
+    assert API.schemaExists?(pid, schema) == false
+    createDatabase(pid, db_name)
+    createSchema(pid, schema)
+
+    assert API.schemaExists?(pid, schema) == true
+
+  end
+
   test "add an owner role, grant the owner role to the Vault user", context do
     db_name = "testdb"
     schema = "public"
@@ -146,22 +164,55 @@ defmodule PostgrixCluster.Test do
     owner_pass = "ownerpass"
     pid = context[:pid]
 
-    createDatabase(pid, db_name)
-    createSchema(pid, schema)
-    addVaultRole(pid, db_name, vault_user, vault_password)
+    API.createDatabase(pid, db_name)
+    API.createSchema(pid, schema)
+    API.addVaultRole(pid, db_name, vault_user, vault_password)
 
     API.addOwnerRole(pid, db_name, db_owner, owner_pass)
-    assert API.roleExists?(pid, db_owner) == true
+    pid = context[:pid]
 
     API.grantOwnerRole(pid, db_owner, vault_user)
     assert API.hasRole?(pid, vault_user, db_owner) == true
+  end
+
+  test "create and drop a database", context do
+    db_name = "testdb"
+    pid = context[:pid]
+    createDatabase(pid, db_name)
+
+    assert API.databaseExists?(pid, db_name) == true
+
+    API.dropDatabase(pid, db_name)
+
+    assert API.databaseExists?(pid, db_name) == false
+
+  end
+
+  test "create and drop Vault role", context do
+    db_name = "testdb"
+    vault_user = "vault"
+    vault_password = "vaultpass"
+    schema = "public"
+    pid = context[:pid]
+    API.createDatabase(pid, db_name)
+    API.createSchema(pid, schema)
+    API.addVaultRole(pid, db_name, vault_user, vault_password)
+    assert API.roleExists?(pid, vault_user) == true
+
+    API.dropVaultRole(pid, db_name, vault_user)
+    assert API.roleExists?(pid, vault_user) == false
   end
 
   test "test that parameter validation only allows words", context do
     value1 = "testword"
     assert API.isValid?(value1) == true
 
+    value1 = "test_word"
+    assert API.isValid?(value1) == true
+
     value2 = "'--test;"
     assert API.isValid?(value2) == false
   end
+
+
 end

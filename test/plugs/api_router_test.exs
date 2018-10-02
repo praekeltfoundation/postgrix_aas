@@ -50,11 +50,11 @@ defmodule API.Router.Test do
 
   test "deprovision a provisioned database by calling POST /v1/instance/deprovision" do
     body =
-    Jason.encode!(%{ip: "127.0.0.1", port: 5433, db_name: "testdb", instance_id: "instance_id"})
+      Jason.encode!(%{ip: "127.0.0.1", port: 5433, db_name: "testdb", instance_id: "instance_id"})
 
     conn_params =
-    conn(:post, "/v1/instance/provision", body)
-    |> put_req_header("content-type", "application/json")
+      conn(:post, "/v1/instance/provision", body)
+      |> put_req_header("content-type", "application/json")
 
     conn = API.Router.call(conn_params, @opts)
 
@@ -65,12 +65,10 @@ defmodule API.Router.Test do
 
     body = %{instance_id: "instance_id"}
 
-    conn_params =
-    conn(:post, "/v1/instance/deprovision", body)
+    conn_params = conn(:post, "/v1/instance/deprovision", body)
     conn = API.Router.call(conn_params, @opts)
     assert conn.state == :sent
     assert conn.resp_body == "{\"response\":\"Action successfully performed.\"}"
     assert conn.status == 200
-
   end
 end

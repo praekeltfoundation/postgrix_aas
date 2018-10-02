@@ -111,13 +111,14 @@ defmodule PostgrixCluster.Test do
 
   defp addVaultRole(pid, db_name, vault_user, vault_password) do
     Postgrex.transaction(
-             pid,
-             fn conn ->
-               Postgrex.query(conn, "CREATE ROLE #{vault_user} WITH CREATEROLE
+      pid,
+      fn conn ->
+        Postgrex.query(conn, "CREATE ROLE #{vault_user} WITH CREATEROLE
                               INHERIT LOGIN ENCRYPTED PASSWORD '#{vault_password}';", [])
-               Postgrex.query(conn, "GRANT ALL PRIVILEGES ON DATABASE #{db_name} TO
+        Postgrex.query(conn, "GRANT ALL PRIVILEGES ON DATABASE #{db_name} TO
                               #{vault_user} WITH GRANT OPTION;", [])
-             end)
+      end
+    )
   end
 
   test "create a database", context do
@@ -152,7 +153,6 @@ defmodule PostgrixCluster.Test do
     createSchema(pid, schema)
 
     assert API.schemaExists?(pid, schema) == true
-
   end
 
   test "add an owner role, grant the owner role to the Vault user", context do
@@ -185,7 +185,6 @@ defmodule PostgrixCluster.Test do
     API.dropDatabase(pid, db_name)
 
     assert API.databaseExists?(pid, db_name) == false
-
   end
 
   test "create and drop Vault role", context do
@@ -213,6 +212,4 @@ defmodule PostgrixCluster.Test do
     value2 = "'--test;"
     assert API.isValid?(value2) == false
   end
-
-
 end

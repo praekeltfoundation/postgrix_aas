@@ -192,7 +192,9 @@ defmodule PostgrixCluster.API do
                               AND rolname = '#{role}';", []) do
         {:ok, result} ->
           result.num_rows == 1
-        _ -> false
+
+        _ ->
+          false
       end
     else
       _ -> false

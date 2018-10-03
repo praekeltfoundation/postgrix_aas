@@ -31,7 +31,7 @@ defmodule API.Router.Test do
     assert conn.status == 422
 
     assert conn.resp_body ==
-             "{\"error\":\"Expected ip, port, db_name, instance_id as JSON parameters.\"}"
+             ~s'{"error":"Expected ip, port, db_name, instance_id as JSON parameters."}'
 
     body =
       Jason.encode!(%{ip: "127.0.0.1", port: 5433, db_name: "testdb", instance_id: "instance_id"})
@@ -45,7 +45,7 @@ defmodule API.Router.Test do
     assert conn.state == :sent
     assert conn.status == 200
 
-    assert conn.resp_body == "{\"response\":\"Action successfully performed.\"}"
+    assert conn.resp_body == ~s'{"response":"Action successfully performed."}'
   end
 
   test "deprovision a provisioned database by calling POST /v1/instance/deprovision" do
@@ -61,14 +61,14 @@ defmodule API.Router.Test do
     assert conn.state == :sent
     assert conn.status == 200
 
-    assert conn.resp_body == "{\"response\":\"Action successfully performed.\"}"
+    assert conn.resp_body == ~s'{"response":"Action successfully performed."}'
 
     body = %{instance_id: "instance_id"}
 
     conn_params = conn(:post, "/v1/instance/deprovision", body)
     conn = API.Router.call(conn_params, @opts)
     assert conn.state == :sent
-    assert conn.resp_body == "{\"response\":\"Action successfully performed.\"}"
+    assert conn.resp_body == ~s'{"response":"Action successfully performed."}'
     assert conn.status == 200
   end
 end

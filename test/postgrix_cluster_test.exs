@@ -203,13 +203,10 @@ defmodule PostgrixCluster.Test do
   end
 
   test "test that parameter validation only allows words", context do
-    value1 = "testword"
-    assert API.isValid?(value1) == true
+    assert API.isValid?("testword") == true
 
-    value1 = "test_word"
-    assert API.isValid?(value1) == true
+    assert API.isValid?("test_word") == true
 
-    value2 = "'--test;"
-    assert API.isValid?(value2) == false
+    assert API.isValid?("'--test;") == false
   end
 end

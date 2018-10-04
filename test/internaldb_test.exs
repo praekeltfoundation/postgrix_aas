@@ -1,7 +1,7 @@
 defmodule InternalDB.RepoCase do
   use ExUnit.Case
   use ExUnit.CaseTemplate
-  alias InternalDB.{Repo, API, Instances}
+  alias InternalDB.{Repo, API}
 
   setup tags do
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(Repo)

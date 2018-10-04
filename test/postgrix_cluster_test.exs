@@ -202,6 +202,21 @@ defmodule PostgrixCluster.Test do
     assert API.roleExists?(pid, vault_user) == false
   end
 
+  test "create and drop owner role", context do
+    db_name = "testdb"
+    db_owner = "owner"
+    owner_pass = "ownerpass"
+    schema = "public"
+    pid = context[:pid]
+    API.createDatabase(pid, db_name)
+    API.createSchema(pid, schema)
+    assert API.roleExists?(pid, db_owner) == false
+    API.addOwnerRole(pid, db_name, db_owner, owner_pass)
+    assert API.roleExists?(pid, db_owner) == true
+    API.dropRole(pid, db_owner)
+    assert API.roleExists?(pid, db_owner) == false
+  end
+
   test "test that parameter validation only allows words", context do
     assert API.isValid?("testword") == true
 

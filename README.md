@@ -1,7 +1,6 @@
 # PostgrixAas
-
-[![Build Status](https://travis-ci.org/praekeltfoundation/postgrix_aas.svg?branch=experimental)](https://travis-ci.org/praekeltfoundation/postgrix_aas)
-[![Coverage Status](https://coveralls.io/repos/github/praekeltfoundation/postgrix_aas/badge.svg?branch=experimental)](https://coveralls.io/github/praekeltfoundation/postgrix_aas?branch=experimental)
+[![Build Status](https://travis-ci.com/praekeltfoundation/postgrix_aas.svg?branch=develop)](https://travis-ci.com/praekeltfoundation/postgrix_aas)
+[![Coverage Status](https://coveralls.io/repos/github/praekeltfoundation/postgrix_aas/badge.svg?branch=develop)](https://coveralls.io/github/praekeltfoundation/postgrix_aas?branch=develop)
 
 **TODO: Add description**
 
@@ -21,4 +20,3 @@ end
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
 be found at [https://hexdocs.pm/postgrix_aas](https://hexdocs.pm/postgrix_aas).
-

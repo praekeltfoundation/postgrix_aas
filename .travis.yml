@@ -7,7 +7,7 @@ dist: trusty
 cache: apt
 env:
   global:
-    - PGVERSION=9.6
+    - PGVERSION=9.6.10
   matrix:
     - MIX_ENV=test 
 install:

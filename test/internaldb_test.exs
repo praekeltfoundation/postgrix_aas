@@ -36,6 +36,15 @@ defmodule InternalDB.RepoCase do
     assert [{ip, port, db_name, instance_id}] == API.instances()
   end
 
+  test "adding a new instance with an invalid IP" do
+    ip = "invalid"
+    port = 5432
+    db_name = "testdb"
+    instance_id = "instance1"
+    API.addInstance(ip, port, db_name, instance_id)
+    assert [] == API.instances()
+  end
+
   test "removing an instance" do
     ip = %Postgrex.INET{address: {127, 0, 0, 1}}
     port = 5432

@@ -202,16 +202,14 @@ defmodule PostgrixCluster.API do
   end
 
   def dropRole(pid, role) do
-    with true <- isValid?(role) do
-      Postgrex.query!(pid, "REASSIGN OWNED BY #{role} TO postgres;", [])
-      Process.sleep(1000)
-      Postgrex.query!(pid, "DROP ROLE IF EXISTS #{role};", [])
+    with true <- isValid?(role),
+         {:ok, result} <- Postgrex.query(pid, "REASSIGN OWNED BY #{role} TO postgres;", []),
+         {:ok, result} <- Postgrex.query(pid, "DROP ROLE IF EXISTS #{role};", []) do
+      {:ok, result}
     else
-      _ ->
+      _ -> {:error, "Error dropping role."}
     end
-
-    end
-
+  end
 
   # Applies a word-only whitelist for values passed to Postgres
   def isValid?(value) do

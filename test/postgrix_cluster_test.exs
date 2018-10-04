@@ -214,7 +214,6 @@ defmodule PostgrixCluster.Test do
     API.addOwnerRole(pid, db_name, db_owner, owner_pass)
     assert API.roleExists?(pid, db_owner) == true
     API.dropRole(pid, db_owner)
-    Process.sleep(1000)
     assert API.roleExists?(pid, db_owner) == false
   end
 

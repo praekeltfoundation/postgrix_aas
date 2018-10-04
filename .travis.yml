@@ -5,9 +5,11 @@ otp_release:
   - 20.3
 dist: trusty
 cache: apt
+addons:
+  postgresql: "9.6.10"
 env:
   global:
-    - PGVERSION=9.6
+    - PGVERSION=9.6.10
   matrix:
     - MIX_ENV=test 
 install:

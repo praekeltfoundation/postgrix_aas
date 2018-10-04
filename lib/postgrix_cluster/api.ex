@@ -204,7 +204,7 @@ defmodule PostgrixCluster.API do
   def dropRole(pid, role) do
     with true <- isValid?(role),
          {:ok, result} <- Postgrex.query(pid, "REASSIGN OWNED BY #{role} TO postgres;", []),
-         {:ok, result} <- Postgrex.query(conn, "ALTER SCHEMA public OWNER TO postgres;", []),
+         {:ok, result} <- Postgrex.query(pid, "ALTER SCHEMA public OWNER TO postgres;", []),
          {:ok, result} <- Postgrex.query(pid, "DROP ROLE IF EXISTS #{role};", []) do
       {:ok, result}
     else

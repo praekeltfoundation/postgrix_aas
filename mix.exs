@@ -17,7 +17,8 @@ defmodule PostgrixAas.MixProject do
   def application do
     [
       extra_applications: [:logger],
-      mod: {PostgrixAas.Application, []}
+      mod: {PostgrixAas.Application, []},
+      applications: [:vaultex],
     ]
   end
 
@@ -29,6 +30,7 @@ defmodule PostgrixAas.MixProject do
       {:ecto_network, "~> 0.6.0"},
       {:plug, "~> 1.4"},
       {:cowboy, "~> 2.3"},
+      {:vaultex, "~> 0.5"},
       {:credo, "~> 0.9.1", only: [:test, :dev], runtime: false},
       {:jason, "~> 1.1"},
       {:excoveralls, "~> 0.5.7", only: :test}

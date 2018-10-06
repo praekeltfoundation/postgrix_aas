@@ -21,3 +21,6 @@ config :postgrix_aas, PostgrixCluster,
   hostname: "localhost",
   port: 5432,
   ownership_timeout: :infinity
+
+config :postgrix_aas, Vault,
+  root_token: "myroot"

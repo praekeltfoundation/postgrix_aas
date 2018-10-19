@@ -1,7 +1,7 @@
 defmodule PostgrixCluster.Server.Test do
   use ExUnit.Case
   use ExUnit.CaseTemplate
-  alias PostgrixCluster.Server, as: Server
+  alias PostgrixCluster.Server
   alias PostgrixCluster.API, as: ClusterAPI
   alias InternalDB.API, as: InternalDBAPI
   alias InternalDB.Repo

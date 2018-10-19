@@ -9,6 +9,7 @@ config :postgrix_aas, InternalDB.Repo,
   password: "mysecretpassword1",
   hostname: "localhost",
   port: 5432,
+  ssl: false,
   pool: Ecto.Adapters.SQL.Sandbox,
   timeout: :infinity
 
@@ -20,7 +21,8 @@ config :postgrix_aas, PostgrixCluster,
   password: "mysecretpassword2",
   hostname: "localhost",
   port: 5432,
+  ssl: true,
   ownership_timeout: :infinity
 
 config :postgrix_aas, Vault,
-  root_token: "myroot"
+  token: "myroot"

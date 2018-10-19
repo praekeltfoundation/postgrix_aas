@@ -10,3 +10,4 @@ app="vault"
 if docker ps | awk -v app="$app" 'NR > 1 && $NF == app{ret=1; exit} END{exit !ret}'; then
   docker stop "$app"
 fi
+rm -f privkey.pem server.key server.crt 

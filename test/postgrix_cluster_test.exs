@@ -16,19 +16,7 @@ defmodule PostgrixCluster.Test do
     vault_user = "vault"
     db_owner = "owner"
     hostname = "localhost"
-
-    port =
-      cond do
-        Mix.env() == :dev ->
-          5433
-
-        Mix.env() == :test ->
-          5432
-
-        true ->
-          5432
-      end
-
+    port = Application.get_env(:postgrix_aas, PostgrixCluster, :port)[:port]
     username = "postgres"
     password = "mysecretpassword2"
     database = "postgres_cluster"

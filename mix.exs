@@ -29,7 +29,7 @@ defmodule PostgrixAas.MixProject do
       {:ecto_network, "~> 0.6.0"},
       {:plug, "~> 1.5"},
       {:cowboy, "~> 2.5"},
-      {:vaultex, "~> 0.5"},
+      {:vaultix, "~> 0.9"},
       {:credo, "~> 0.9.1", only: [:test, :dev], runtime: false},
       {:jason, "~> 1.1"},
       {:excoveralls, "~> 0.5.7", only: :test}

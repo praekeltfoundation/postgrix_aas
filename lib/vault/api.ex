@@ -10,7 +10,14 @@ defmodule Vault.API do
   # use gatekeeper location for now
   def equipBindPolicy(policy_name, role_name) do
     path = "secret/gatekeeper"
-    {:ok, data} = Vaultix.Client.read(path)
+
+    {:ok, data} =
+      Vaultix.Client.read(
+        path,
+        :token,
+        {Application.get_env(:postgrix_aas, Vault, :token)[:token]}
+      )
+
     policies = Jason.decode!(data)
     policy = policies[policy_name]
 

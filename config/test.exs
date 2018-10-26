@@ -20,8 +20,11 @@ config :postgrix_aas, PostgrixCluster,
   username: "postgres",
   password: "mysecretpassword2",
   hostname: "localhost",
-  port: 5432,
+  port: 5433,
   ssl: true,
+  ssl_opts: [
+    cacertfile: "./ca.pem"
+  ],
   ownership_timeout: :infinity
 
 config :postgrix_aas, Vault,

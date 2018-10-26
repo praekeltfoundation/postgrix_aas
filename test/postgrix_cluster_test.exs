@@ -15,7 +15,7 @@ defmodule PostgrixCluster.Test do
     schema = "public"
     vault_user = "vault"
     db_owner = "owner"
-    hostname = "localhost"
+    hostname = "0.0.0.0"
     port = Application.get_env(:postgrix_aas, PostgrixCluster, :port)[:port]
     IO.puts("PORT")
     IO.puts(port)

@@ -22,7 +22,7 @@ install:
   - mix local.hex --force
   - mix deps.get
 script:
-  - MIX_ENV=test mix do compile --warnings-as-errors, coveralls.json
+  - MIX_ENV=test mix do compile, coveralls.json
   - mix format --check-formatted
   - mix credo
 after_script:

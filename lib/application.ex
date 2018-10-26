@@ -15,7 +15,7 @@ defmodule PostgrixAas.Application do
       {PostgrixCluster.Server, name: ClusterAPI.Server}
     ]
 
-    #start vaultex client here? or auth here?
+    # start vaultex client here? or auth here?
     Logger.info("Application Started!")
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options

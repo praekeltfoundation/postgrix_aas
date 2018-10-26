@@ -27,5 +27,4 @@ config :postgrix_aas, PostgrixCluster,
   ],
   ownership_timeout: :infinity
 
-config :postgrix_aas, Vault,
-  token: "myroot"
+config :postgrix_aas, Vault, token: "myroot"

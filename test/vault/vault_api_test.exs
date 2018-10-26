@@ -39,7 +39,12 @@ defmodule Vault.API.Test do
     db_name = "postgres_cluster"
     vault_user = "postgres"
     vault_pass = "mysecretpassword2"
-    allowed_roles = ["#{host}--#{port}--#{db_name}--readwrite", "#{host}--#{port}--#{db_name}--readonly"]
+
+    allowed_roles = [
+      "#{host}--#{port}--#{db_name}--readwrite",
+      "#{host}--#{port}--#{db_name}--readonly"
+    ]
+
     path = "database/config/#{conn_name}"
     API.addDatabase(conn_name, host, port, db_name, vault_user, vault_pass, allowed_roles)
     assert API.databaseExists?(conn_name) == true
@@ -56,7 +61,12 @@ defmodule Vault.API.Test do
     vault_pass = "mysecretpassword2"
     default_ttl = "30m"
     max_ttl = "6h"
-    allowed_roles = ["#{host}--#{port}--#{db_name}--readwrite", "#{host}--#{port}--#{db_name}--readonly"]
+
+    allowed_roles = [
+      "#{host}--#{port}--#{db_name}--readwrite",
+      "#{host}--#{port}--#{db_name}--readonly"
+    ]
+
     assert API.roleExists?(role_name) == false
     API.addDatabase(conn_name, host, port, db_name, vault_user, vault_pass, allowed_roles)
     API.addReadWriteRole(role_name, owner, default_ttl, max_ttl)
@@ -74,7 +84,12 @@ defmodule Vault.API.Test do
     vault_pass = "mysecretpassword2"
     default_ttl = "30m"
     max_ttl = "6h"
-    allowed_roles = ["#{host}--#{port}--#{db_name}--readwrite", "#{host}--#{port}--#{db_name}--readonly"]
+
+    allowed_roles = [
+      "#{host}--#{port}--#{db_name}--readwrite",
+      "#{host}--#{port}--#{db_name}--readonly"
+    ]
+
     assert API.roleExists?(role_name) == false
     API.addDatabase(conn_name, host, port, db_name, vault_user, vault_pass, allowed_roles)
     API.addReadWriteRole(role_name, owner, default_ttl, max_ttl)
@@ -144,7 +159,4 @@ defmodule Vault.API.Test do
     assert API.vaultPolicyExists?(policy_name_r) == false
     assert API.vaultPolicyExists?(policy_name_rw) == false
   end
-
-
-
 end

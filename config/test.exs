@@ -8,7 +8,7 @@ config :postgrix_aas, InternalDB.Repo,
   username: "ps_internal",
   password: "mysecretpassword1",
   hostname: "0.0.0.0",
-  port: 5432,
+  port: 5433,
   ssl: false,
   pool: Ecto.Adapters.SQL.Sandbox,
   timeout: :infinity
@@ -20,7 +20,7 @@ config :postgrix_aas, PostgrixCluster,
   username: "postgres",
   password: "mysecretpassword2",
   hostname: "0.0.0.0",
-  port: 5432,
+  port: 5434,
   ssl: true,
   ssl_opts: [
     cacertfile: "./ca.pem"

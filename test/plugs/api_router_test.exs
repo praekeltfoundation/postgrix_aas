@@ -25,6 +25,7 @@ defmodule API.Router.Test do
   end
 
   test "provision a new database in the cluster by calling POST /v1/instance/provision" do
+    port = Application.get_env(:postgrix_aas, PostgrixCluster, :port)[:port]
     conn_params = conn(:post, "/v1/instance/provision")
     conn = API.Router.call(conn_params, @opts)
     assert conn.state == :sent
@@ -34,7 +35,7 @@ defmodule API.Router.Test do
              ~s'{"error":"Expected ip, port, db_name, instance_id as JSON parameters."}'
 
     body =
-      Jason.encode!(%{ip: "127.0.0.1", port: 5433, db_name: "testdb", instance_id: "instance_id"})
+      Jason.encode!(%{ip: "127.0.0.1", port: port, db_name: "testdb", instance_id: "instance_id"})
 
     conn_params =
       conn(:post, "/v1/instance/provision", body)
@@ -49,8 +50,9 @@ defmodule API.Router.Test do
   end
 
   test "deprovision a provisioned database by calling POST /v1/instance/deprovision" do
+    port = Application.get_env(:postgrix_aas, PostgrixCluster, :port)[:port]
     body =
-      Jason.encode!(%{ip: "127.0.0.1", port: 5433, db_name: "testdb", instance_id: "instance_id"})
+      Jason.encode!(%{ip: "127.0.0.1", port: port, db_name: "testdb", instance_id: "instance_id"})
 
     conn_params =
       conn(:post, "/v1/instance/provision", body)

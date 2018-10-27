@@ -22,6 +22,7 @@ install:
   - mix local.hex --force
   - mix deps.get
 script:
+  - sleep 15
   - MIX_ENV=test mix do compile, coveralls.json
   - mix format --check-formatted
   - mix credo

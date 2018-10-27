@@ -15,7 +15,7 @@ defmodule PostgrixCluster.Test do
     schema = "public"
     vault_user = "vault"
     db_owner = "owner"
-    hostname = "postgres_cluster"
+    hostname = Application.get_env(:postgrix_aas, PostgrixCluster, :hostname)[:hostname]
     port = Application.get_env(:postgrix_aas, PostgrixCluster, :port)[:port]
     username = "postgres"
     password = "mysecretpassword2"

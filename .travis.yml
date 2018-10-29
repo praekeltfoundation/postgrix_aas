@@ -17,7 +17,8 @@ before_install:
   - sudo mv docker-compose /usr/local/bin
   - sudo chown 999 ./cert-key.pem
   - sudo chmod 600 ./cert-key.pem
-  - ./test_setup.sh
+  - docker-compose up -d
+  - docker exec -ti vault sh -c "vault login token=myroot && vault audit enable file file_path=/vault/logs/vault_audit.log && vault secrets enable database"
 install:
   - mix local.rebar --force
   - mix local.hex --force

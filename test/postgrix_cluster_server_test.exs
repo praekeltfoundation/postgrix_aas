@@ -28,7 +28,7 @@ defmodule PostgrixCluster.Server.Test do
 
   test "test provisioning a database instance and updating internal records" do
     ip = "127.0.0.1"
-    port = 5433
+    port = Application.get_env(:postgrix_aas, PostgrixCluster, :port)[:port]
     db_name = "test1"
     instance_id = "instance_id"
     vault_user = "vault"
@@ -53,7 +53,7 @@ defmodule PostgrixCluster.Server.Test do
 
   test "test rolling back all operations if provision fails at intermediate steps" do
     ip = "badvalue"
-    port = 5433
+    port = Application.get_env(:postgrix_aas, PostgrixCluster, :port)[:port]
     db_name = "test1"
     instance_id = "instance_id"
     vault_user = "vault"

@@ -4,7 +4,7 @@ services:
     container_name: internal_db
     image: "postgres:9.6"
     ports:
-     - "5432:5432"
+     - "5433:5432"
     environment:
      - POSTGRES_USER=ps_internal
      - POSTGRES_PASSWORD=mysecretpassword1
@@ -14,7 +14,7 @@ services:
     image: "postgres:9.6"
     command: -c logging_collector=on -c ssl=on -c ssl_cert_file=/var/lib/postgresql/server.crt -c ssl_key_file=/var/lib/postgresql/server.key
     ports:
-     - "5433:5432"
+     - "5434:5432"
     environment:
      - POSTGRES_USER=postgres
      - POSTGRES_PASSWORD=mysecretpassword2

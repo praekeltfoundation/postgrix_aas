@@ -51,6 +51,7 @@ defmodule API.Router.Test do
 
   test "deprovision a provisioned database by calling POST /v1/instance/deprovision" do
     port = Application.get_env(:postgrix_aas, PostgrixCluster, :port)[:port]
+
     body =
       Jason.encode!(%{ip: "127.0.0.1", port: port, db_name: "testdb", instance_id: "instance_id"})
 

@@ -6,39 +6,6 @@ defmodule Vault.API do
   to manage dynamic credentials with databases.
   """
 
-  # this is for bind
-  # use gatekeeper location for now
-  def equipBindPolicy(policy_name, role_name) do
-    path = "secret/gatekeeper"
-
-    {:ok, data} =
-      Vaultix.Client.read(
-        path,
-        :token,
-        {Application.get_env(:postgrix_aas, Vault, :token)[:token]}
-      )
-
-    policies = Jason.decode!(data)
-    policy = policies[policy_name]
-
-    if policy == None do
-      policy = Jason.encode!(%{"roles" => role_name, "ttl" => 5000, "num_uses" => 1})
-    else
-      current = policy["roles"]
-      [role_name | current]
-      policy = current
-    end
-
-    Map.update!(policies, policy_name, policy)
-
-    Vaultix.Client.write(
-      path,
-      policy,
-      :token,
-      {Application.get_env(:postgrix_aas, Vault, :token)[:token]}
-    )
-  end
-
   # add vault internal policy to get perms to read creds from role
   def addVaultPolicy(policy_name, role_name) do
     path = "sys/policy/#{policy_name}"

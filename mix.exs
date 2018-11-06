@@ -32,7 +32,8 @@ defmodule PostgrixAas.MixProject do
       {:vaultix, "~> 0.9"},
       {:credo, "~> 0.9.1", only: [:test, :dev], runtime: false},
       {:jason, "~> 1.1"},
-      {:excoveralls, "~> 0.5.7", only: :test}
+      {:excoveralls, "~> 0.5.7", only: :test},
+      {:httpoison, "~> 1.0"}
     ]
   end
 

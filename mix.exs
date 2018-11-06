@@ -27,11 +27,13 @@ defmodule PostgrixAas.MixProject do
       {:ecto, "~> 2.0"},
       {:postgrex, "~> 0.13"},
       {:ecto_network, "~> 0.6.0"},
-      {:plug, "~> 1.4"},
-      {:cowboy, "~> 2.3"},
+      {:plug, "~> 1.5"},
+      {:cowboy, "~> 2.5"},
+      {:vaultix, "~> 0.9"},
       {:credo, "~> 0.9.1", only: [:test, :dev], runtime: false},
       {:jason, "~> 1.1"},
-      {:excoveralls, "~> 0.5.7", only: :test}
+      {:excoveralls, "~> 0.5.7", only: :test},
+      {:httpoison, "~> 1.0"}
     ]
   end
 

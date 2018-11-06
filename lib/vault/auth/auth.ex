@@ -6,10 +6,12 @@ defmodule Auth.API do
   """
   def updatePolicy(task_prefix, policies) do
     path = "auth/mesos/task-policies"
+
     payload = %{
       "task-id-prefix" => task_prefix,
       "policies" => policies
     }
+
     Vaultix.Client.write(
       path,
       payload,

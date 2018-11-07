@@ -17,6 +17,7 @@ defmodule PostgrixAas.MixProject do
   def application do
     [
       extra_applications: [:logger],
+      env: [endpoint: "http://localhost"],
       mod: {PostgrixAas.Application, []}
     ]
   end
@@ -27,13 +28,14 @@ defmodule PostgrixAas.MixProject do
       {:ecto, "~> 2.0"},
       {:postgrex, "~> 0.13"},
       {:ecto_network, "~> 0.6.0"},
-      {:plug, "~> 1.5"},
-      {:cowboy, "~> 2.5"},
+      {:plug, "~> 1.7"},
+      {:plug_cowboy, "~> 2.0"},
+      {:cowboy, "~> 2.3"},
       {:vaultix, "~> 0.9"},
       {:credo, "~> 0.9.1", only: [:test, :dev], runtime: false},
       {:jason, "~> 1.1"},
       {:excoveralls, "~> 0.5.7", only: :test},
-      {:httpoison, "~> 1.0"}
+      {:bypass, "~> 0.9", only: [:dev, :test]}
     ]
   end
 

@@ -11,7 +11,7 @@ defmodule PostgrixAas.Application do
     # List all child processes to be supervised
     children = [
       InternalDB.Repo,
-      {Plug.Adapters.Cowboy2, scheme: :http, plug: API.Router, options: [port: 8080]},
+      {Plug.Adapters.Cowboy, scheme: :http, plug: API.Router, options: [port: 8080]},
       {PostgrixCluster.Server, name: ClusterAPI.Server}
     ]
 

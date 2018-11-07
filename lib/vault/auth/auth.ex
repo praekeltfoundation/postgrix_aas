@@ -1,4 +1,4 @@
-defmodule Auth.API do
+defmodule Vault.Auth.API do
   import Vaultix
 
   @moduledoc """
